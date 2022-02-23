@@ -17,6 +17,7 @@ LabDAO OpenLab CLI
 <!-- tocstop -->
 
 # Usage
+Install via NPM
 <!-- usage -->
 ```sh-session
 $ npm install -g @labdao/openlab-cli
@@ -29,6 +30,22 @@ USAGE
   $ openlab COMMAND
 ...
 ```
+
+Alternatively, install the latest version via github
+<!-- usage -->
+```sh-session
+$ npm install https://github.com/labDAO/openlab-CLI
+$ openlab COMMAND
+running command...
+$ openlab (--version)
+@labdao/openlab-cli/0.0.0 linux-x64 node-v14.18.2
+$ openlab --help [COMMAND]
+USAGE
+  $ openlab COMMAND
+...
+```
+
+
 <!-- usagestop -->
 # Commands
 <!-- commands -->
