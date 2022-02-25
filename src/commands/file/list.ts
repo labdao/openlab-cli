@@ -2,7 +2,7 @@ import { Command, CliUx } from "@oclif/core"
 import { EstuaryAPI, EstuaryListEntry, EstuaryPin } from '../../utils/estuary';
 
 export default class FileList extends Command {
-  static enableJsonFlag = true
+  static enableJsonFlag = false
   static description = 'list files'
 
   static examples = [
@@ -39,7 +39,10 @@ export default class FileList extends Command {
           get: row => new Date(row.created).toISOString().substring(0, 19).replace('T', ' ')
         },
       },
-      { ...flags }
+      {
+        // printLine: this.log, // current oclif.CliUx bug: https://github.com/oclif/core/issues/377
+        ...flags
+      }
     )
   }
 }
