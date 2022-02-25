@@ -52,6 +52,7 @@ function loadLocalKey() {
 export class EstuaryAPI {
   clientKey: EstuaryClientKey | null
   api: ApisauceInstance
+  uploadApi: ApisauceInstance
   uploadKeyApi: ApisauceInstance
 
   constructor() {
@@ -65,6 +66,10 @@ export class EstuaryAPI {
     }
     this.api = create({
       baseURL: userConfig.get('estuary').estuaryApiUrl,
+      headers: headers
+    })
+    this.uploadApi = create({
+      baseURL: userConfig.get('estuary').estuaryUploadUrl,
       headers: headers
     })
     this.refreshKey()
@@ -85,6 +90,7 @@ export class EstuaryAPI {
     }
     if (!this.clientKey) throw new Error('Could not get Estuary API key')
     this.api.setHeader('Authorization', 'Bearer ' + this.clientKey.token)
+    this.uploadKeyApi.setHeader('Authorization', 'Bearer ' + this.clientKey.token)
   }
 
   async list(): Promise<EstuaryList> {
@@ -98,15 +104,10 @@ export class EstuaryAPI {
   async pushFile(filepath: string) {
     const form = new FormData()
     form.append("data", createReadStream(filepath))
-    return this.api.post('content/add', form)
+    return this.uploadApi.post('content/add', form, {
+      headers: {
+        ...form.getHeaders()
+      }
+    })
   }
 }
-
-// // get a new API key
-// api
-//   .get('/repos/skellock/apisauce/commits')
-//   .then(response => response.data[0].commit.message)
-//   .then(console.log)
-
-// // customizing headers per-request
-// api.post('/users', {name: 'steve'}, {headers: {'x-gigawatts': '1.21'}})

@@ -16,6 +16,6 @@ export default class FilePush extends Command {
     const {args, flags} = await this.parse(FilePush)
     const estuary = new EstuaryAPI()
     const res = await estuary.pushFile(args.path)
-    this.log(JSON.stringify(res.data, null, 2))
+    CliUx.ux.styledJSON(res.data)
   }
 }

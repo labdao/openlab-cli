@@ -8,7 +8,8 @@ const userConfig = new Conf({
     estuary: {
       clientKeyUrl: 'https://estuary-auth.labdao-application-layer.workers.dev',
       clientKey: null,
-      estuaryApiUrl: 'https://api.estuary.tech'
+      estuaryApiUrl: 'https://api.estuary.tech',
+      estuaryUploadUrl: 'https://shuttle-5.estuary.tech'
     },
   },
 })
