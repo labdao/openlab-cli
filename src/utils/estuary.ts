@@ -12,7 +12,7 @@ import {
 //   create as createIPFSNode
 // } from 'ipfs-core'
 // import writeIterableToFile from './it-stream'
-import userConfig from '../config'
+import userConfig from './config'
 // import {
 //   CID
 // } from 'multiformats/cid'
