@@ -1,7 +1,8 @@
-import {Command, Flags} from '@oclif/core'
+import { Command, CliUx } from "@oclif/core"
+import { EstuaryAPI, EstuaryListEntry, EstuaryPin } from '../../utils/estuary';
 
 export default class FileList extends Command {
-  static enableJsonFlag = true
+  static enableJsonFlag = false
   static description = 'list files'
 
   static examples = [
@@ -9,21 +10,39 @@ export default class FileList extends Command {
   ]
 
   static flags = {
-    // flag with a value (-n, --name=VALUE)
-    // name: Flags.string({char: 'n', description: 'name to print'}),
-    // flag with no value (-f, --force)
-    // force: Flags.boolean({char: 'f'}),
+    ...CliUx.ux.table.flags()
   }
 
   static args = [{name: 'path', description: 'remote path to list'}]
 
   public async run(): Promise<void> {
     const {args, flags} = await this.parse(FileList)
-
-  //   const name = flags.name ?? 'world'
-  //   this.log(`hello ${name} from /home/rik/c/labdao/openlab-cli/src/commands/file/list.ts`)
-  //   if (args.file && flags.force) {
-  //     this.log(`you input --force and --file: ${args.file}`)
-  //   }
+    const path = args.path || '/'
+    const estuary = new EstuaryAPI()
+    const data = await estuary.list()
+    CliUx.ux.table(
+      data.results as any[],
+      {
+        name: {
+          get: row => row.pin && row.pin.name
+        },
+        cid: {
+          get: row => row.pin && row.pin.cid,
+          header: 'CID',
+          minWidth: 40
+        },
+        pinid: {
+          get: row => row.requestid,
+          header: 'PinID'
+        },
+        created: {
+          get: row => new Date(row.created).toISOString().substring(0, 19).replace('T', ' ')
+        },
+      },
+      {
+        // printLine: this.log, // current oclif.CliUx bug: https://github.com/oclif/core/issues/377
+        ...flags
+      }
+    )
   }
 }
