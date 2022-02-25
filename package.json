@@ -1,6 +1,6 @@
 {
   "name": "@labdao/openlab-cli",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "LabDAO OpenLab CLI",
   "author": "Rik Smith-Unna @blahah",
   "bin": {
