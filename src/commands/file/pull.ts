@@ -8,7 +8,7 @@ import * as  download from 'download'
 import {
   createWriteStream
 } from 'fs'
-import { pipeline } from 'stream'
+// import { pipeline } from 'stream'
 
 export default class FilePull extends Command {
   static description = 'pull a remote file from IPFS to your local file system'
@@ -57,6 +57,8 @@ export default class FilePull extends Command {
       createWriteStream(
         flags.outpath
       )
-    )
+    ).on('close', () => {
+      this.log('Download completed!')
+    })
   }
 }

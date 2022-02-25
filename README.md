@@ -34,6 +34,7 @@ USAGE
 # Commands
 <!-- commands -->
 * [`openlab file list [PATH]`](#openlab-file-list-path)
+* [`openlab file pull CID`](#openlab-file-pull-cid)
 * [`openlab file push [PATH]`](#openlab-file-push-path)
 * [`openlab help [COMMAND]`](#openlab-help-command)
 
@@ -65,6 +66,27 @@ DESCRIPTION
 
 EXAMPLES
   $ openlab file list
+```
+
+## `openlab file pull CID`
+
+pull a remote file from IPFS to your local file system
+
+```
+USAGE
+  $ openlab file pull [CID] [-o <value>]
+
+ARGUMENTS
+  CID  the IPFS content identifier of the file or directory to pull
+
+FLAGS
+  -o, --outpath=<value>  [default: .] the path where the pulled file or directory should be stored
+
+DESCRIPTION
+  pull a remote file from IPFS to your local file system
+
+EXAMPLES
+  $ openlab file pull
 ```
 
 ## `openlab file push [PATH]`
