@@ -56,7 +56,6 @@ export class EstuaryAPI {
 
   constructor() {
     this.clientKey = loadLocalKey()
-    console.log(userConfig.get('estuary'))
     this.uploadKeyApi = create({
       baseURL: userConfig.get('estuary').clientKeyUrl
     })
