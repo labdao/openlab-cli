@@ -1,18 +1,27 @@
 /* eslint-disable indent */
 import {
   ApisauceInstance,
-  create
+  create as createAPI
 } from 'apisauce'
 import * as FormData from 'form-data'
 import {
-  createReadStream
+  createReadStream,
+  // PathLike
 } from 'fs'
+// import {
+//   create as createIPFSNode
+// } from 'ipfs-core'
+// import writeIterableToFile from './it-stream'
 import userConfig from '../config'
+// import {
+//   CID
+// } from 'multiformats/cid'
 
 interface EstuaryClientKey {
   token: string;
   expiry: string;
 }
+
 export interface EstuaryListEntry {
   requestid: string;
   status: string;
@@ -21,12 +30,14 @@ export interface EstuaryListEntry {
   delegates: string[];
   info: null;
 }
+
 export interface EstuaryPin {
   cid: string;
   name: string;
   origins: null;
   meta: null;
 }
+
 export interface EstuaryList {
   count: number;
   results: EstuaryListEntry[];
@@ -57,18 +68,18 @@ export class EstuaryAPI {
 
   constructor() {
     this.clientKey = loadLocalKey()
-    this.uploadKeyApi = create({
+    this.uploadKeyApi = createAPI({
       baseURL: userConfig.get('estuary').clientKeyUrl
     })
     let headers = {
       'Authorization': this.clientKey ?
         'Bearer ' + (this.clientKey as EstuaryClientKey).token : ''
     }
-    this.api = create({
+    this.api = createAPI({
       baseURL: userConfig.get('estuary').estuaryApiUrl,
       headers: headers
     })
-    this.uploadApi = create({
+    this.uploadApi = createAPI({
       baseURL: userConfig.get('estuary').estuaryUploadUrl,
       headers: headers
     })
@@ -93,7 +104,7 @@ export class EstuaryAPI {
     this.uploadKeyApi.setHeader('Authorization', 'Bearer ' + this.clientKey.token)
   }
 
-  async list(): Promise<EstuaryList> {
+  async list(): Promise < EstuaryList > {
     return this.api.get('pinning/pins').then(r => r.data as EstuaryList)
   }
 
@@ -110,4 +121,10 @@ export class EstuaryAPI {
       }
     })
   }
+
+  // async pullFile(cid: string, outpath: PathLike) {
+  //   const node = await createIPFSNode()
+  //   const iterable = node.get(CID.parse(cid))
+  //   await writeIterableToFile(iterable, outpath)
+  // }
 }
