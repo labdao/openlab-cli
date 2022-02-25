@@ -6,10 +6,10 @@
   "bin": {
     "openlab": "./bin/run"
   },
-  "homepage": "https://github.com/labDAO/openlab-cli",
+  "homepage": "https://github.com/labdao/openlab-cli",
   "license": "MIT",
   "main": "dist/index.js",
-  "repository": "labDAO/openlab-cli",
+  "repository": "labdao/openlab-cli",
   "files": [
     "/bin",
     "/dist",
