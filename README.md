@@ -5,7 +5,7 @@ LabDAO OpenLab CLI
 
 > !! NOTE !! - this repo is in active development and not ready to use. Please wait for the first release.
 
-[![LabDAO Openlab](https://img.shields.io/badge/LabDAO-OpenLab-39bfad.svg)](https://labdao.com)
+[![LabDAO OpenLab](https://img.shields.io/badge/LabDAO-OpenLab-39bfad.svg)](https://labdao.com)
 [![Version](https://img.shields.io/npm/v/labdao/openlab-cli)](https://npmjs.org/package/labdao/openlab-cli)
 [![CircleCI](https://circleci.com/gh/labDAO/openlab-CLI/tree/main.svg?style=shield)](https://circleci.com/gh/labDAO/openlab-CLI/tree/main)
 [![Downloads/week](https://img.shields.io/npm/dw/labdao/openlab-cli.svg)](https://npmjs.org/package/labdao/openlab-cli)
