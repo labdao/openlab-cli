@@ -1,4 +1,5 @@
-import {Command, Flags} from '@oclif/core'
+import {CliUx, Command, Flags} from '@oclif/core'
+import {EstuaryAPI} from '../../utils/estuary';
 
 export default class FilePush extends Command {
   static description = 'push a local file from your storage system to IPFS'
@@ -13,11 +14,8 @@ export default class FilePush extends Command {
 
   public async run(): Promise<void> {
     const {args, flags} = await this.parse(FilePush)
-
-    // const name = flags.name ?? 'world'
-    // this.log(`hello ${name} from /home/rik/c/labdao/openlab-cli/src/commands/file/push.ts`)
-    // if (args.file && flags.force) {
-    //   this.log(`you input --force and --file: ${args.file}`)
-    // }
+    const estuary = new EstuaryAPI()
+    const res = await estuary.pushFile(args.path)
+    CliUx.ux.styledJSON(res.data)
   }
 }
