@@ -21,7 +21,6 @@
     "@oclif/core": "^1",
     "@oclif/plugin-help": "^5",
     "apisauce": "^2.1.5",
-    "cids": "^1.1.9",
     "conf": "^10.1.1",
     "download": "^8.0.0",
     "form-data": "^4.0.0",
@@ -32,7 +31,6 @@
     "@oclif/test": "^2",
     "@types/chai": "^4",
     "@types/download": "^8.0.1",
-    "@types/form-data": "^2.5.0",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.9.4",
     "chai": "^4",
@@ -71,7 +69,7 @@
     "version": "oclif readme && git add README.md"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=16.0.0"
   },
   "bugs": "https://github.com/labDAO/openlab-cli/issues",
   "keywords": [
