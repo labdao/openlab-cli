@@ -3,7 +3,8 @@ import Conf from 'conf'
 const userConfig = new Conf({
   defaults: {
     openlab: {
-      baseUrl: 'http://toolchest.apps.openlab-api.fibrill.ae',
+      baseUrl: 'https://applayer-gateway-serverless.labdao-application-layer.workers.dev'
+      // baseUrl: 'http://toolchest.apps.openlab-api.fibrill.ae',
     },
     estuary: {
       clientKeyUrl: 'https://estuary-auth.labdao-application-layer.workers.dev',
