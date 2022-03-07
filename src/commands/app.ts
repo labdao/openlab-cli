@@ -1,9 +1,8 @@
 import { OpenLabApi, Configuration } from "@labdao/openlab-applayer-client"
 import { Command, CliUx } from "@oclif/core"
-import { empty } from "multiformats/bytes"
 import userConfig from '../config'
 
-export default class FileList extends Command {
+export default class App extends Command {
   static enableJsonFlag = false
   static description = 'get application details'
 
@@ -18,7 +17,7 @@ export default class FileList extends Command {
   static args = [{name: 'appname', description: 'name of the application'}]
 
   public async run(): Promise<void> {
-    const {args, flags} = await this.parse(FileList)
+    const {args, flags} = await this.parse(App)
     CliUx.ux.action.start(`Fetching app details for '${args.appname}'`)
     const path = args.path || '/'
     const api2 = new OpenLabApi(new Configuration({

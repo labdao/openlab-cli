@@ -2,7 +2,7 @@ import {Hook} from '@oclif/core'
 
 const CFonts = require('cfonts')
 const cfontConfig = {
-	font: 'tiny',              // define the font face
+	font: 'block',              // define the font face
 	align: 'left',              // define text alignment
 	colors: ['system'],         // define all colors
 	background: 'transparent',  // define the background color, you can also use `backgroundColor` here as key
@@ -17,7 +17,7 @@ const cfontConfig = {
 }
 
 const hook: Hook<'init'> = async function (opts) {
-  CFonts.say('openlabs', cfontConfig)
+  CFonts.say('openlab', cfontConfig)
 }
 
 export default hook
