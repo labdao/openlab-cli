@@ -21,6 +21,7 @@
     "@oclif/core": "^1",
     "@oclif/plugin-help": "^5",
     "apisauce": "^2.1.5",
+    "cfonts": "^2.10.0",
     "conf": "^10.1.1",
     "download": "^8.0.0",
     "form-data": "^4.0.0",
@@ -60,6 +61,9 @@
       "file": {
         "description": "Manage files available to or from OpenLab on IPFS"
       }
+    },
+    "hooks": {
+      "init": "./src/hooks/init/header"
     }
   },
   "scripts": {
