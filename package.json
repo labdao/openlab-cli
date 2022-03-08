@@ -72,7 +72,8 @@
         "posttest": "npm run lint",
         "prepack": "npm run build && oclif manifest && oclif readme",
         "test": "mocha --forbid-only \"test/**/*.test.ts\"",
-        "version": "npm run build && oclif readme && git add README.md"
+        "version": "npm run build && oclif readme && git add README.md",
+        "doc": "npm run build && oclif helpdata > docs/helpdata.json"
     },
     "engines": {
         "node": ">=16.0.0"
