@@ -2,6 +2,7 @@ import {CliUx, Command, Flags} from '@oclif/core'
 import {EstuaryAPI} from '../../utils/estuary';
 
 export default class FilePush extends Command {
+  static enableJsonFlag = true
   static description = 'push a local file from your storage system to IPFS'
 
   static examples = [

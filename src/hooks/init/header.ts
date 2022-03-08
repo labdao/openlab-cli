@@ -1,4 +1,5 @@
 import {Hook} from '@oclif/core'
+import { argv } from 'process'
 
 const CFonts = require('cfonts')
 const cfontConfig = {
@@ -17,6 +18,7 @@ const cfontConfig = {
 }
 
 const hook: Hook<'init'> = async function (opts) {
+  if (argv.includes('helpdata')) return
   CFonts.say('openlab', cfontConfig)
 }
 

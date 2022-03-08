@@ -3,7 +3,7 @@ import { Command, CliUx } from "@oclif/core"
 import userConfig from '../../config'
 
 export default class AppList extends Command {
-  static enableJsonFlag = false
+  static enableJsonFlag = true
   static description = 'list applications'
 
   static examples = [

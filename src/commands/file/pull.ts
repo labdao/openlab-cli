@@ -11,17 +11,18 @@ import {
 import { pipeline } from 'stream'
 
 export default class FilePull extends Command {
+  static enableJsonFlag = true
   static description = 'pull a remote file from IPFS to your local file system'
 
   static examples = [
-    '<%= config.bin %> <%= command.id %>',
+    '<%= config.bin %> <%= command.id %> bafkreictm5biak56glcshkeungckjwf4tf33wxea566dozdyvhrrebnetu -o gp47_tail.fasta',
   ]
 
   static flags = {
     outpath: Flags.string({
       char: 'o',
       description: 'the path where the pulled file or directory should be stored',
-      default: '.'
+      default: '[CID]'
     })
   }
 
@@ -36,6 +37,8 @@ export default class FilePull extends Command {
       args,
       flags
     } = await this.parse(FilePull)
+
+    flags.outpath = flags.outpath === '[CID]' ? args.CID : flags.outpath
 
     this.log(`Running pull command with cid = ${args.CID} and outpath = ${flags.outpath}`)
 

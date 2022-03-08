@@ -2,7 +2,7 @@ import { Command, CliUx } from "@oclif/core"
 import { EstuaryAPI, EstuaryListEntry, EstuaryPin } from '../../utils/estuary';
 
 export default class FileList extends Command {
-  static enableJsonFlag = false
+  static enableJsonFlag = true
   static description = 'list files'
 
   static examples = [
