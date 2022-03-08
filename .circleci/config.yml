@@ -27,3 +27,4 @@ workflows:
                 - main
     jobs:
       - release-management/dependabot-automerge
+
