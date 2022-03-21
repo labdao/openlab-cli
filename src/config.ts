@@ -3,6 +3,7 @@ import Conf from 'conf'
 const userConfig = new Conf({
   defaults: {
     openlab: {
+      // baseUrl: 'https://disco.applayer.run'
       baseUrl: 'https://applayer-gateway-serverless.labdao-application-layer.workers.dev'
       // baseUrl: 'http://toolchest.apps.openlab-api.fibrill.ae',
     },

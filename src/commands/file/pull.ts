@@ -3,7 +3,7 @@ import {
   Command,
   Flags
 } from '@oclif/core'
-import * as  download from 'download'
+import download from 'download'
 // import { EstuaryAPI } from '../../utils/estuary'
 import {
   createWriteStream

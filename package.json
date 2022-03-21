@@ -14,7 +14,8 @@
         "/bin",
         "/dist",
         "/npm-shrinkwrap.json",
-        "/oclif.manifest.json"
+        "/oclif.manifest.json",
+        "/docs"
     ],
     "dependencies": {
         "@labdao/openlab-applayer-client": "^0.0.2",
@@ -26,12 +27,16 @@
         "download": "^8.0.0",
         "form-data": "^4.0.0",
         "ipfs-core": "^0.14.1",
-        "multiformats": "^9.6.4"
+        "multiformats": "^9.6.4",
+        "nunjucks": "^3.2.3",
+        "oclif-plugin-helpdata": "^5.1.12",
+        "winston": "^3.6.0"
     },
     "devDependencies": {
         "@oclif/test": "^2",
         "@types/chai": "^4",
         "@types/download": "^8.0.1",
+        "@types/form-data": "^2.5.0",
         "@types/mocha": "^9.0.0",
         "@types/node": "^16.9.4",
         "chai": "^4",
@@ -50,7 +55,7 @@
         "commands": "./dist/commands",
         "plugins": [
             "@oclif/plugin-help",
-            "oclif-plugin-help-data"
+            "oclif-plugin-helpdata"
         ],
         "topicSeparator": " ",
         "topics": {
@@ -73,7 +78,7 @@
         "prepack": "npm run build && oclif manifest && oclif readme",
         "test": "mocha --forbid-only \"test/**/*.test.ts\"",
         "version": "npm run build && oclif readme && git add README.md",
-        "doc": "npm run build && oclif helpdata > docs/helpdata.json"
+        "doc": "npm run build && ./bin/dev helpdata -n > docs/helpdata.json"
     },
     "engines": {
         "node": ">=16.0.0"

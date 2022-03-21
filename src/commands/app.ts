@@ -1,13 +1,13 @@
 import { OpenLabApi, Configuration } from "@labdao/openlab-applayer-client"
 import { Command, CliUx } from "@oclif/core"
 import userConfig from '../config'
-
+import logger from "../utils/log"
 export default class App extends Command {
   static enableJsonFlag = true
   static description = 'get application details'
 
   static examples = [
-    '<%= config.bin %> <%= command.id %>',
+    'openlab app revcomp',
   ]
 
   static flags = {
@@ -18,7 +18,7 @@ export default class App extends Command {
 
   public async run(): Promise<void> {
     const {args, flags} = await this.parse(App)
-    CliUx.ux.action.start(`Fetching app details for '${args.appname}'`)
+    CliUx.ux.action.start(`🖥️  Fetching app details for '${args.appname}'`)
     const path = args.path || '/'
     const api2 = new OpenLabApi(new Configuration({
       basePath: userConfig.get('openlab').baseUrl
@@ -26,40 +26,33 @@ export default class App extends Command {
     const app = await api2.getApp(args.appname)
     CliUx.ux.action.stop()
     const a = app.data
-    CliUx.ux.styledHeader(`${a.appname} v${a.version} from LabDAO Openlab`)
-    this.log('App name:', a.appname)
-    this.log('App description:', a.description)
-    this.log('Available from:', 'LabDAO Openlab', userConfig.get('openlab').baseUrl)
-    const eps = a.endpoints?.map(
-      ep => {
-        const url = new URL(
-          ['v1/apps/', ep].join('/').replace('//', '/'),
-          userConfig.get('openlab').baseUrl
-        )
-        const docsurl = new URL(
-          ['docs#', ep].join('/').replace('//', '/'),
-          userConfig.get('openlab').baseUrl
-        )
-        return {
-          endpoint: ep,
-          url: url.href,
-          docs: docsurl.href
-        }
-      }
-    )
-    CliUx.ux.table(
-      eps as any[],
-      {
-        endpoint: {},
-        url: {
-          minWidth: 40
-        },
-        docs: {}
-      },
-      {
-        // printLine: this.log, // current oclif.CliUx bug: https://github.com/oclif/core/issues/377
-        ...flags
-      }
-    )
+    if (flags.json) return console.log(JSON.stringify(a, null, 2))
+    logger.info(`App name: ${a.appname}`)
+    logger.info(`App version ${a.version}`)
+    logger.info(`App description: ${a.description}`)
+    logger.info(`Provider: LabDAO Openlab `)
+    logger.info(`API server: ${userConfig.get('openlab').baseUrl}`)
+    // const eps = a.endpoints?.map(
+    //   ep => {
+    //     const url = new URL(
+    //       ['v1/apps/', ep].join('/').replace('//', '/'),
+    //       userConfig.get('openlab').baseUrl
+    //     )
+    //     const docsurl = new URL(
+    //       ['docs#', ep].join('/').replace('//', '/'),
+    //       userConfig.get('openlab').baseUrl
+    //     )
+    //     return {
+    //       endpoint: ep,
+    //       url: url.href,
+    //       docs: docsurl.href
+    //     }
+    //   }
+    // )
+    // eps?.forEach(e => {
+    //   logger.info(`Endpoint: ${e.endpoint}`)
+    //   logger.info(`  - URL: ${e.url}`)
+    //   logger.info(`  - docs: ${e.docs}`)
+    // })
   }
 }
