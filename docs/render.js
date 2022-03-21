@@ -3,15 +3,8 @@ const { exec } = require("child_process")
 const fs = require('fs')
 
 const transformCommand = c => {
-  const {
-    id,
-    description,
-    pluginName,
-    examples,
-    flags,
-    args
-  } = c
   c.globalFlags = c._globalFlags
+  delete c._globalFlags
   return c
 }
 
@@ -55,7 +48,7 @@ async function run() {
   const output = Object.assign({}, helpdata)
   output.commands = await Promise.all(
     helpdata.commands
-    .map(transformCommand)
+      .map(transformCommand)
     // .map(recordExamples)
   )
 

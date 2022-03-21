@@ -1,0 +1,14 @@
+{
+  "name": "next-gen-documentation",
+  "scripts": {
+    "docz:dev": "docz dev",
+    "docz:build": "docz build",
+    "docz:serve": "docz build && docz serve"
+  },
+  "dependencies": {
+    "docz": "latest",
+    "react": "16.8.0",
+    "react-dom": "16.8.0"
+  }
+}
+

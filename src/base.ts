@@ -11,11 +11,12 @@ export default abstract class extends Command {
   //   const {flags} = this.parse(this.constructor)
   //   this.flags = flags
   // }
-  // async catch(err) {
-  //   // add any custom logic to handle errors from the command
-  //   // or simply return the parent class error handling
-  //   return super.catch(err);
-  // }
+  async catch(err: Error) {
+    // logger.error(err)
+    // add any custom logic to handle errors from the command
+    // or simply return the parent class error handling
+    // return super.catch(err);
+  }
   // async finally(err) {
   //   // called after run and catch regardless of whether or not the command errored
   //   return super.finally(_);
