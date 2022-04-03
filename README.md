@@ -118,3 +118,16 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.11/src/commands/help.ts)_
 <!-- commandsstop -->
+
+
+account  
+- [x] add  
+- [X] balance
+- [x] remove  
+
+exchange
+- [x] acceptjob
+- [ ] canceljob
+- [ ] closejob
+- [ ] submitjob
+- [ ] swap
