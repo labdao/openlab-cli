@@ -124,6 +124,8 @@ account
 - [x] add  
 - [X] balance
 - [x] remove  
+- [x] address
+- [x] makeitrain
 
 exchange
 - [x] acceptjob

@@ -22,9 +22,9 @@ const userConfig = new Conf({
             openLabNFT: '0x18d7EAA555D813595BCEBDaDD6b0C55A8FEa89c7'
         }
     },
-    tokenAddress: {
+    tokens: {
         maticMumbai: {
-            LAB: '0x5eBc142Ed9573Ff55a9AE556d92b1898Dc288C53'
+            USD: '0x7fD2493c6ec0400be7247D6A251F00fdccc17375'
         }
     }
   },

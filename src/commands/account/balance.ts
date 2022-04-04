@@ -32,7 +32,7 @@ export default class AccountBalance extends Command {
 
         else {
             const erc20Symbol:string = args.tokenSymbol
-            const erc20Address = userConfig.get('tokenAddress')['maticMumbai'][erc20Symbol]
+            const erc20Address = userConfig.get('tokens')['maticMumbai'][erc20Symbol]
             const erc20Contract = new web3.eth.Contract(erc20Json as AbiItem[], erc20Address)
             const password = await CliUx.ux.prompt('Enter a password to decrypt your wallet', {type: 'hide'})
             const keystoreJsonV3 = JSON.parse(fs.readFileSync(baseDir+'/wallet.json', 'utf-8'))

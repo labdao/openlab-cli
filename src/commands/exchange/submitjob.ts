@@ -35,7 +35,7 @@ export default class ExchangeSubmitJob extends Command {
 
             const erc20Symbol:string = args.tokenSymbol
             const exchangeAddress = userConfig.get('contracts').maticMumbai.exchange
-            const token = userConfig.get('tokenAddress')['maticMumbai'][erc20Symbol]
+            const token = userConfig.get('tokens')['maticMumbai'][erc20Symbol]
             const password = await CliUx.ux.prompt('Enter a password to decrypt your wallet', {type: 'hide'})
             const keystoreJsonV3 = JSON.parse(fs.readFileSync(baseDir+'/wallet.json', 'utf-8'))
             const account = web3.eth.accounts.decrypt(keystoreJsonV3, password)
@@ -52,8 +52,9 @@ export default class ExchangeSubmitJob extends Command {
             //call submitjob
             this.log(`Submitting Job...`)
             const exchangeContract = new web3.eth.Contract(exchangeJson as AbiItem[], exchangeAddress)
-            await exchangeContract.methods.submitJob(client, token, jobCost, args.jobURI).send({'from': account.address, 'gasLimit': 500000, 'gasPrice': web3.utils.toWei('30', 'gwei')})
+            const txHash = await exchangeContract.methods.submitJob(client, token, jobCost, args.jobURI).send({'from': account.address, 'gasLimit': 500000, 'gasPrice': web3.utils.toWei('30', 'gwei')})
             this.log(`Job Submitted Successfully`)
+            this.log(`https://mumbai.polygonscan.com/tx/${txHash}`)
         }
     }
 }
