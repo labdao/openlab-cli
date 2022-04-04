@@ -54,7 +54,7 @@ export default class ExchangeSubmitJob extends Command {
             const exchangeContract = new web3.eth.Contract(exchangeJson as AbiItem[], exchangeAddress)
             const txHash = await exchangeContract.methods.submitJob(client, token, jobCost, args.jobURI).send({'from': account.address, 'gasLimit': 500000, 'gasPrice': web3.utils.toWei('30', 'gwei')})
             this.log(`Job Submitted Successfully`)
-            this.log(`https://mumbai.polygonscan.com/tx/${txHash}`)
+            this.log(`https://mumbai.polygonscan.com/tx/${txHash.transactionHash}`)
         }
     }
 }

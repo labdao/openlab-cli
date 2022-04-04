@@ -129,7 +129,6 @@ account
 
 exchange
 - [x] acceptjob
-- [ ] canceljob
-- [ ] closejob
-- [ ] submitjob
-- [ ] swap
+- [x] returnfunds
+- [x] submitjob
+- [x] swap

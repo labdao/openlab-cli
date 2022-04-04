@@ -6,8 +6,6 @@ import os from 'os'
 import testusdJson from '../abis/testusd.json'
 import { AbiItem } from 'web3-utils'
 
-let ctr = 0
-
 const getSpaces = () => {
   const n = Math.floor(Math.random() * (300 - 1)) + 1;
   let spaces = "";
