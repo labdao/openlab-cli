@@ -17,9 +17,9 @@ const userConfig = new Conf({
     },
     contracts: {
         maticMumbai: {
-            exchange: '0xad987CdEE0b0C42789a3EcFABf23382424bb7aE0',
-            exchangeFactory: '0xfE4A6F713d9D28A0AFd9b7934418Ae5b5b71230A',
-            openLabNFT: '0x18d7EAA555D813595BCEBDaDD6b0C55A8FEa89c7'
+            exchange: '0xfcF2b192c888d411827fDa1884C6FE2438C15Ad0',
+            exchangeFactory: '0x3B7bAcB0DB759E8Ba5BeeddAFeA4Fb65B89DC4Ea',
+            openLabNFT: '0xC9f04360ca658d1baF50398f754F00bAE56ebF04'
         }
     },
     tokens: {
