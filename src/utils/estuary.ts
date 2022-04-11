@@ -3,7 +3,7 @@ import {
   ApisauceInstance,
   create as createAPI
 } from 'apisauce'
-import * as FormData from 'form-data'
+import FormData from 'form-data'
 import {
   createReadStream,
   // PathLike
