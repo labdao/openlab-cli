@@ -10,6 +10,8 @@ export default class ExchangeClosedJobs extends Command {
         query {
             jobs(where: {status: 2}) {
                 id
+                jobURI
+                openlabNFTURI
             }
         }
     `
@@ -33,6 +35,8 @@ export default class ExchangeClosedJobs extends Command {
             for (let i=0; i<jobs.length; i++) {
                 // Substring to remove '0x' prefix on job id
                 this.log(`Job ID: ${jobs[i].id.substring(2)}`)
+                this.log(`Job Metadata IPFS CID: ${jobs[i].jobURI.substring(5)}`)
+                this.log(`Openlab NFT IPFS CID: ${jobs[i].openlabNFTURI.substring(5)}`)
             }
         }
     }

@@ -34,6 +34,8 @@ export default class ExchangeOpenJobs extends Command {
             for (let i=0; i<jobs.length; i++) {
                 // Substring to remove '0x' prefix on job id
                 this.log(`Job ID: ${jobs[i].id.substring(2)}`)
+                // Substring to only provide CID (not with ipifs/)
+                this.log(`IPFS CID: ${jobs[i].jobURI.substring(5)}`)
             }
         }
     }

@@ -10,6 +10,7 @@ export default class ExchangeActiveJobs extends Command {
         query {
             jobs(where: {status: 1}) {
                 id
+                provider
             }
         }
     `
@@ -33,6 +34,7 @@ export default class ExchangeActiveJobs extends Command {
             for (let i=0; i<jobs.length; i++) {
                 // Substring to remove '0x' prefix on job id
                 this.log(`Job ID: ${jobs[i].id.substring(2)}`)
+                this.log(`Provider: ${jobs[i].provider}`)
             }
         }
     }
