@@ -132,3 +132,7 @@ exchange
 - [x] returnfunds
 - [x] submitjob
 - [x] swap
+- [x] openjobs
+- [x] activejobs
+- [x] closedjobs
+- [x] cancelledjobs
