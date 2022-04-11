@@ -10,6 +10,7 @@ export default class ExchangeOpenJobs extends Command {
         query {
             jobs(where: {status: 0}) {
                 id
+                jobURI
             }
         }
     `
