@@ -13,7 +13,7 @@ export default class ExchangeSubmitJob extends Command {
   static flags = {}
 
   static args = [
-    { name: 'tokenSymbol', description: 'path of file or directory to push', required: true },
+    { name: 'tokenSymbol', description: 'Path of file or directory to push', required: true },
     { name: 'jobCost', description: 'Cost to complete job', required: true },
     { name: 'jobURI', description: 'Input file URI', required: true },
   ]

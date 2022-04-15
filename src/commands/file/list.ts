@@ -40,7 +40,7 @@ export default class FileList extends Command {
         },
       },
       {
-        // printLine: this.log, // current oclif.CliUx bug: https://github.com/oclif/core/issues/377
+        printLine: this.log.bind(this),
         ...flags
       }
     )

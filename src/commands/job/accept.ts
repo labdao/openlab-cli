@@ -12,7 +12,7 @@ export default class ExchangeAcceptJob extends Command {
   static flags = {}
 
   static args = [
-    { name: 'jobId', description: 'id of the job to accept', required: true },
+    { name: 'jobId', description: 'ID of the job to accept', required: true },
   ]
 
   static examples = [

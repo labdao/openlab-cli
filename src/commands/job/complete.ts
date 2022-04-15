@@ -12,7 +12,7 @@ export default class ExchangeSwap extends Command {
   static flags = {}
 
   static args = [
-    { name: 'jobId', description: 'id of the job to complete', required: true },
+    { name: 'jobId', description: 'ID of the job to complete', required: true },
     { name: 'tokenURI', description: 'tokenURI ', required: true }
   ]
 
