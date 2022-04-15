@@ -1,11 +1,11 @@
 import { OpenLabApi, Configuration } from "@labdao/openlab-applayer-client"
 import { Command, CliUx } from "@oclif/core"
 import { empty } from "multiformats/bytes"
-import userConfig from '../config'
+import userConfig from '../../config'
 
 export default class FileList extends Command {
   static enableJsonFlag = false
-  static description = 'get application details'
+  static description = 'Get application details'
 
   static examples = [
     '<%= config.bin %> <%= command.id %>',
