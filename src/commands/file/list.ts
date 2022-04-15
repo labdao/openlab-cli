@@ -3,7 +3,7 @@ import { EstuaryAPI, EstuaryListEntry, EstuaryPin } from '../../utils/estuary';
 
 export default class FileList extends Command {
   static enableJsonFlag = false
-  static description = 'list files'
+  static description = 'List files'
 
   static examples = [
     '<%= config.bin %> <%= command.id %>',

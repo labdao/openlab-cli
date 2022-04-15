@@ -11,7 +11,7 @@ import {
 import { pipeline } from 'stream'
 
 export default class FilePull extends Command {
-  static description = 'pull a remote file from IPFS to your local file system'
+  static description = 'Pull a remote file from IPFS to your local file system'
 
   static examples = [
     '<%= config.bin %> <%= command.id %>',

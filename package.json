@@ -56,8 +56,14 @@
     ],
     "topicSeparator": " ",
     "topics": {
+      "account": {
+        "description": "Connect and manage your Ethereum wallet"
+      },
       "app": {
         "description": "Discover and get information about available apps"
+      },
+      "exchange": {
+        "description": "Manage jobs on the OpenLab exchange"
       },
       "file": {
         "description": "Manage files available to or from OpenLab on IPFS"
