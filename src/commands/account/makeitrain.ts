@@ -1,9 +1,9 @@
 import { CliUx, Command, Flags } from '@oclif/core'
 import Web3 from 'web3'
-import userConfig from '../config'
+import userConfig from '../../config'
 import fs from 'fs'
 import os from 'os'
-import testusdJson from '../abis/testusd.json'
+import testusdJson from '../../abis/testusd.json'
 import { AbiItem } from 'web3-utils'
 
 const getSpaces = () => {
