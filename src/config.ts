@@ -13,7 +13,7 @@ const userConfig = new Conf({
       estuaryUploadUrl: 'https://shuttle-5.estuary.tech'
     },
     provider: {
-        maticMumbai: 'https://matic-mumbai.chainstacklabs.com'
+        maticMumbai: 'https://rpc-mumbai.matic.today'
     },
     contracts: {
         maticMumbai: {
