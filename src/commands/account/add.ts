@@ -5,7 +5,7 @@ import fs from 'fs'
 import os from 'os'
 
 export default class AccountAdd extends Command {
-    static description = 'add an ethereum account'
+    static description = 'Add an ethereum account'
     static examples = [
         '<%= config.bin %> <%= command.id %>',
     ]

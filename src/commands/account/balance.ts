@@ -7,7 +7,7 @@ import erc20Json from '../../abis/erc20.json'
 import { AbiItem } from 'web3-utils'
 
 export default class AccountBalance extends Command {
-    static description = 'remove an ethereum account'
+    static description = 'Get the balance of your ETH wallet'
     static examples = [
         '<%= config.bin %> <%= command.id %>',
     ]

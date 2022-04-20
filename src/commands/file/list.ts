@@ -3,7 +3,7 @@ import { EstuaryAPI, EstuaryListEntry, EstuaryPin } from '../../utils/estuary';
 
 export default class FileList extends Command {
   static enableJsonFlag = false
-  static description = 'list files'
+  static description = 'List files'
 
   static examples = [
     '<%= config.bin %> <%= command.id %>',
@@ -40,7 +40,7 @@ export default class FileList extends Command {
         },
       },
       {
-        // printLine: this.log, // current oclif.CliUx bug: https://github.com/oclif/core/issues/377
+        printLine: this.log.bind(this),
         ...flags
       }
     )
