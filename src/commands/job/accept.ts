@@ -1,12 +1,8 @@
 import { CliUx, Command } from '@oclif/core'
-import Web3 from 'web3'
-import userConfig from '../../config'
-import fs from 'fs'
-import os from 'os'
-import exchangeJson from '../../abis/exchange.json'
-import { AbiItem } from 'web3-utils'
+import { acceptJob } from '../../utils/wallet'
+import Listr from 'listr'
 
-export default class ExchangeAcceptJob extends Command {
+export default class JobAccept extends Command {
   static description = 'Accept a job'
 
   static flags = {}
@@ -16,29 +12,36 @@ export default class ExchangeAcceptJob extends Command {
   ]
 
   static examples = [
-    '<%= config.bin %> <%= command.id %>',
+    'openlab job accept <jobID>',
   ]
+
   public async run(): Promise<void> {
     const {
       args
-    } = await this.parse(ExchangeAcceptJob)
-    const web3 = new Web3(userConfig.get('provider').maticMumbai)
-    const baseDir = os.homedir() + '/.openlab'
-    if (!fs.existsSync(baseDir + '/wallet.json')) {
-      this.log("Wallet doesn't exist")
-    } else {
-      const exchangeAddress = userConfig.get('contracts').maticMumbai.exchange
-      const password = await CliUx.ux.prompt('Enter a password to decrypt your wallet', { type: 'hide' })
-      const keystoreJsonV3 = JSON.parse(fs.readFileSync(baseDir + '/wallet.json', 'utf-8'))
-      const account = web3.eth.accounts.decrypt(keystoreJsonV3, password)
-      web3.eth.accounts.wallet.add(account)
+    } = await this.parse(JobAccept)
 
-      //call acceptJob
-      this.log(`Accepting Job...`)
-      const exchangeContract = new web3.eth.Contract(exchangeJson as AbiItem[], exchangeAddress)
-      const txHash = await exchangeContract.methods.acceptJob(args.jobId).send({ 'from': account.address, 'gasLimit': 500000, 'gasPrice': web3.utils.toWei('30', 'gwei') })
-      this.log(`Job Accepted Successfully`)
-      this.log(`https://mumbai.polygonscan.com/tx/${txHash.transactionHash}`)
-    }
+    const tasks = new Listr([
+      {
+        title: 'Confirm job acceptance',
+        task: async () => true
+      },
+      {
+        title: 'Accept job',
+        task: async (ctx, task) => {
+          task.title = 'Accepting job - waiting for contract response'
+          ctx.tx = await acceptJob(args.jobId)
+          return `Job accepted. Transaction hash: ${ctx.tx}`
+        }
+      },
+      {
+        title: 'Get transaction details',
+        task: async ctx => `https://mumbai.polygonscan.com/tx/${ctx.tx}`
+      }
+    ], {})
+
+    const confirm = await CliUx.ux.confirm(
+      'Are you sure you want to accept this job?'
+    )
+    if (confirm) tasks.run()
   }
 }

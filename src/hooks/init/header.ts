@@ -17,7 +17,7 @@ const cfontConfig = {
 }
 
 const hook: Hook<'init'> = async function (opts) {
-  CFonts.say('openlabs', cfontConfig)
+  CFonts.say('OPENLAB', cfontConfig)
 }
 
 export default hook

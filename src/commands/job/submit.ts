@@ -7,8 +7,8 @@ import erc20Json from '../../abis/erc20.json'
 import exchangeJson from '../../abis/exchange.json'
 import { AbiItem } from 'web3-utils'
 
-export default class ExchangeSubmitJob extends Command {
-  static description = 'submit a new job to openlab exchange'
+export default class JobSubmit extends Command {
+  static description = 'Submit a new job to OpenLab'
 
   static flags = {}
 
