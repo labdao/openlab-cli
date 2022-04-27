@@ -13,13 +13,13 @@ const userConfig = new Conf({
       estuaryUploadUrl: 'https://shuttle-5.estuary.tech'
     },
     provider: {
-        maticMumbai: 'https://matic-mumbai.chainstacklabs.com'
+        maticMumbai: 'https://rpc-mumbai.matic.today'
     },
     contracts: {
         maticMumbai: {
-            exchange: '0xfcF2b192c888d411827fDa1884C6FE2438C15Ad0',
-            exchangeFactory: '0x3B7bAcB0DB759E8Ba5BeeddAFeA4Fb65B89DC4Ea',
-            openLabNFT: '0xC9f04360ca658d1baF50398f754F00bAE56ebF04'
+            exchange: '0xfee53bffb6b70593478cd027cb2b52776fd8c064',
+            exchangeFactory: '0x53Eb5C8EF42D7261C0C2c9B8cF637a13B04f860A',
+            openLabNFT: '0x29bdc464C50F7680259242E5E2F68ab1FC75C964'
         }
     },
     tokens: {

@@ -42,13 +42,17 @@ export default class JobSubmit extends Command {
       const client = account.address
       const jobCost = web3.utils.toWei(args.jobCost, 'ether')
       web3.eth.accounts.wallet.add(account)
-
-      //approve tokens
-      this.log(`Approving the exchange contract to spend your ${erc20Symbol} tokens...`)
       const erc20Contract = new web3.eth.Contract(erc20Json as AbiItem[], token)
-      await erc20Contract.methods.approve(exchangeAddress, jobCost).send({ 'from': account.address, 'gasLimit': 100000, 'gasPrice': web3.utils.toWei('30', 'gwei') })
-      this.log("Approve Successful")
-
+      const allowance = await erc20Contract.methods.allowance(account.address, exchangeAddress).call()
+      const allowanceBN = new (web3.utils as any).BN(allowance)
+      const jobCostBN = new (web3.utils as any).BN(jobCost)
+      const uint256Max = '115792089237316195423570985008687907853269984665640564039457584007913129639935'
+      if (allowanceBN.lt(jobCostBN)) {
+        //approve tokens
+        this.log(`Approving the exchange contract to spend your ${erc20Symbol} tokens...`)
+        await erc20Contract.methods.approve(exchangeAddress, uint256Max).send({ 'from': account.address, 'gasLimit': 100000, 'gasPrice': web3.utils.toWei('30', 'gwei') })
+        this.log("Approve Successful")
+      }
       //call submitjob
       this.log(`Submitting Job...`)
       const exchangeContract = new web3.eth.Contract(exchangeJson as AbiItem[], exchangeAddress)

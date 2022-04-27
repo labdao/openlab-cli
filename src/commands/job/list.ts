@@ -23,7 +23,7 @@ export default class JobList extends Command {
   ]
 
   // Update when new subgraph is deployed
-  static APIURL = `https://api.thegraph.com/subgraphs/name/tohrnii/openlab-exchange-mumbai-c`
+  static APIURL = `https://api.thegraph.com/subgraphs/name/acashmoney/openlab-exchange`
 
   // Construct the job query with optional
   // filtering by job status
