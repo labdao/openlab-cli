@@ -37,9 +37,9 @@ export default class ExchangeSwap extends Command {
 
       this.log(`Swap...`)
       const exchangeContract = new web3.eth.Contract(exchangeJson as AbiItem[], exchangeAddress)
-      const txHash = await exchangeContract.methods.swap(args.jobId, args.tokenURI).send({ 'from': account.address, 'gasLimit': 500000, 'gasPrice': web3.utils.toWei('30', 'gwei') })
+      const tx = await exchangeContract.methods.swap(args.jobId, args.tokenURI).send({ 'from': account.address, 'gasLimit': 500000, 'gasPrice': web3.utils.toWei('30', 'gwei') })
       this.log(`Swap Successful`)
-      this.log(`https://mumbai.polygonscan.com/tx/${txHash.transactionHash}`)
+      this.log(`https://mumbai.polygonscan.com/tx/${tx.transactionHash}`)
     }
   }
 }

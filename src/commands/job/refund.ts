@@ -37,9 +37,9 @@ export default class ExchangeReturnFunds extends Command {
       //call returnFunds
       this.log(`Cancelling Job...`)
       const exchangeContract = new web3.eth.Contract(exchangeJson as AbiItem[], exchangeAddress)
-      const txHash = await exchangeContract.methods.returnFunds(args.jobId).send({ 'from': account.address, 'gasLimit': 500000, 'gasPrice': web3.utils.toWei('30', 'gwei') })
+      const tx = await exchangeContract.methods.returnFunds(args.jobId).send({ 'from': account.address, 'gasLimit': 500000, 'gasPrice': web3.utils.toWei('30', 'gwei') })
       this.log(`Job Cancelled Successfully`)
-      this.log(`https://mumbai.polygonscan.com/tx/${txHash.transactionHash}`)
+      this.log(`https://mumbai.polygonscan.com/tx/${tx.transactionHash}`)
     }
   }
 }
