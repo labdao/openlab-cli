@@ -38,7 +38,6 @@ export default class JobAccept extends Command {
         task: async ctx => `https://mumbai.polygonscan.com/tx/${ctx.tx}`
       }
     ], {})
-
     const confirm = await CliUx.ux.confirm(
       'Are you sure you want to accept this job?'
     )

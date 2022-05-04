@@ -6,21 +6,6 @@ import os from 'os'
 import testusdJson from '../../abis/testusd.json'
 import { AbiItem } from 'web3-utils'
 
-const getSpaces = () => {
-  const n = Math.floor(Math.random() * (300 - 1)) + 1
-  let spaces = ""
-
-  for (let i = 0; i < n; i++) spaces += " "
-
-  return spaces
-}
-
-const rain = () => {
-  setInterval(() => {
-    console.log(getSpaces() + "/")
-  }, 100)
-}
-
 export default class MakeItRain extends Command {
   static description = 'Mint test USD tokens'
 
@@ -40,10 +25,10 @@ export default class MakeItRain extends Command {
       const account = web3.eth.accounts.decrypt(keystoreJsonV3, password)
       web3.eth.accounts.wallet.add(account)
       this.log(`Minting USD tokens...`)
-      rain()
       const testusdContract = new web3.eth.Contract(testusdJson as AbiItem[], usdToken)
-      await testusdContract.methods.mint().send({ 'from': account.address, 'gasLimit': 100000, 'gasPrice': web3.utils.toWei('30', 'gwei') })
-      process.exit(0)
+      const tx = await testusdContract.methods.mint().send({ 'from': account.address, 'gasLimit': 100000, 'gasPrice': web3.utils.toWei('30', 'gwei') })
+      this.log(`100 test USD minted`)
+      this.log(`https://mumbai.polygonscan.com/tx/${tx.transactionHash}`)
     }
   }
 }
