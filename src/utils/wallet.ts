@@ -88,7 +88,7 @@ export async function submitJob(
     jobCostWei,
     jobURI
   ).send(
-    standardContractParams(account)
+    standardContractParams(account.address)
   )
   return tx
 }
@@ -98,7 +98,7 @@ export async function acceptJob(jobId: string) {
   const account = await login()
   const contract = getExchangeContract()
   const tx = await contract.methods.acceptJob(jobId).send(
-    standardContractParams(account)
+    standardContractParams(account.address)
   )
   return tx
 }
@@ -108,7 +108,7 @@ export async function refundJob(jobId: string) {
   const account = await login()
   const contract = getExchangeContract()
   const tx = await contract.methods.returnFunds(jobId).send(
-    standardContractParams(account)
+    standardContractParams(account.address)
   )
   return tx
 }
@@ -134,15 +134,15 @@ export async function completeContract(
     jobId,
     tokenURI
   ).send(
-    standardContractParams(account)
+    standardContractParams(account.address)
   )
 
   return tx
 }
 
-function standardContractParams(account: { address: any }) {
+function standardContractParams(address: string) {
   return {
-    from: account.address,
+    from: address,
     gasLimit: 500000,
     gasPrice: web3.utils.toWei('30', 'gwei')
   }
@@ -185,7 +185,7 @@ export async function checkAllowance(jobCost: string) {
     exchangeAddress,
     UINT256_MAX
   ).send(
-    standardContractParams(account)
+    standardContractParams(account.address)
   )
   return 'Exchange contract allowance approved: ' + tx.transactionHash
 }
