@@ -60,62 +60,72 @@ function loadLocalKey() {
   return userConfig.get('estuary').clientKey
 }
 
-export class EstuaryAPI {
-  clientKey: EstuaryClientKey | null
-  api: ApisauceInstance
-  uploadApi: ApisauceInstance
-  uploadKeyApi: ApisauceInstance
+type LazyloadingAPI = ApisauceInstance
 
-  constructor() {
-    this.clientKey = loadLocalKey()
-    this.uploadKeyApi = createAPI({
+export class EstuaryAPI {
+  clientKey?: EstuaryClientKey
+  api?: ApisauceInstance
+  uploadApi?: ApisauceInstance
+  uploadKeyApi?: ApisauceInstance
+
+  constructor() {}
+
+  async loadApiKey() {
+    const uploadKeyApi = createAPI({
       baseURL: userConfig.get('estuary').clientKeyUrl
     })
-    let headers = {
+    const res = await uploadKeyApi.post('/', {})
+    if (res.problem) {
+      throw res.originalError
+    }
+    if (!res.data) throw new Error(
+      'Could not get Estuary API key - empty respose from issuer API'
+    )
+    console.log(res.data)
+    const data = res.data as EstuaryClientKey
+    this.clientKey = data
+  }
+
+  async buildHeaders() {
+    await this.loadApiKey()
+    return {
       'Authorization': this.clientKey ?
         'Bearer ' + (this.clientKey as EstuaryClientKey).token : ''
     }
-    this.api = createAPI({
+  }
+
+  async getApi() {
+    const headers = await this.buildHeaders()
+    return createAPI({
       baseURL: userConfig.get('estuary').estuaryApiUrl,
       headers: headers
     })
-    this.uploadApi = createAPI({
+  }
+
+  async getUploadApi() {
+    const headers = await this.buildHeaders()
+    return createAPI({
       baseURL: userConfig.get('estuary').estuaryUploadUrl,
       headers: headers
     })
-    this.refreshKey()
-  }
-
-  async refreshKey() {
-    if (isExpired(this.clientKey)) {
-      const res = await this.uploadKeyApi.post('/', {})
-      if (res.problem) {
-        throw res.originalError
-      }
-      if (!res.data) throw new Error(
-        'Could not get Estuary API key - empty respose from issuer API'
-      )
-      const data = res.data as EstuaryClientKey
-      this.clientKey = data
-      userConfig.set('estuary.clientKey', this.clientKey)
-    }
-    if (!this.clientKey) throw new Error('Could not get Estuary API key')
-    this.api.setHeader('Authorization', 'Bearer ' + this.clientKey.token)
-    this.uploadKeyApi.setHeader('Authorization', 'Bearer ' + this.clientKey.token)
   }
 
   async list(): Promise < EstuaryList > {
-    return this.api.get('pinning/pins').then(r => r.data as EstuaryList)
+    const api = await this.getApi()
+    const res = await api.get('pinning/pins')
+    return res.data as EstuaryList
   }
 
   async getPin(pinid: string) {
-    return this.api.get('pinning/pins/' + pinid)
+    const api = await this.getApi()
+    return api.get('pinning/pins/' + pinid)
   }
 
   async pushFile(filepath: string) {
     const form = new FormData()
     form.append("data", createReadStream(filepath))
-    return this.uploadApi.post('content/add', form, {
+    const uploadApi = await this.getUploadApi()
+    return uploadApi.post('content/add', form, {
       headers: {
         ...form.getHeaders()
       }
