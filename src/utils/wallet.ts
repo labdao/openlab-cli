@@ -3,6 +3,7 @@ import os from 'os'
 import path from 'path'
 
 import { AbiItem, toBN } from 'web3-utils'
+import axios from 'axios'
 import { CliUx } from '@oclif/core'
 import Web3 from 'web3'
 
@@ -10,7 +11,7 @@ import userConfig from '../config'
 import erc20ABI from '../abis/erc20.json'
 import exchangeABI from '../abis/exchange.json'
 
-const UINT256_MAX = `${2**256-1}`
+const UINT256_MAX = `${2 ** 256 - 1}`
 
 const baseDir = path.join(os.homedir(), '.openlab')
 const walletPath = path.join(baseDir, 'wallet.json')
@@ -24,10 +25,13 @@ let keystore
 // Load local wallet, unlock it and return the account
 export async function login() {
   if (!walletExists) {
-    throw new Error('No wallet found - you should create or add one using openlab account add')
+    CliUx.ux.log('No wallet found!')
+    CliUx.ux.log('You should create or add one by running:')
+    CliUx.ux.log('> openlab account add')
+    CliUx.ux.exit(1)
   }
   const password = await CliUx.ux.prompt(
-    'Enter a password to decrypt your wallet',
+    'Enter wallet password',
     { type: 'hide' }
   )
   keystore = JSON.parse(fs.readFileSync(walletPath, 'utf-8'))
@@ -52,14 +56,12 @@ export async function createWallet(
 }
 
 export async function importWallet(
+  password: string,
   privkey: string,
-  password: string
 ) {
   const account = web3.eth.accounts.privateKeyToAccount(privkey)
-  const encryptedAccount = web3.eth.accounts.encrypt(
-    account.privateKey,
-    password
-  )
+  const encryptedAccount = account.encrypt(password)
+
   fs.writeFileSync(
     walletPath,
     JSON.stringify(encryptedAccount)
@@ -69,6 +71,29 @@ export async function importWallet(
 
 export async function removeWallet() {
   fs.unlinkSync(walletPath)
+}
+
+export async function drinkFromFaucet(address: string) {
+  const res = await axios.post(
+    "https://api.faucet.matic.network/transferTokens",
+    {
+      network: "mumbai",
+      address: address,
+      token: "maticToken"
+    }
+  )
+  return res.data
+}
+
+// Get the MATIC balance of the wallet
+export async function checkMaticBalance(address: string): Promise<string> {
+  const res = await axios.get(
+    'https://api-testnet.polygonscan.com/api?module=account&action=balance&address='
+    + address
+  )
+  const rawBalance = parseInt(res.data.result)
+  const balance = web3.utils.fromWei(`${rawBalance}`)
+  return balance
 }
 
 // Submit a new job to the exchange contract

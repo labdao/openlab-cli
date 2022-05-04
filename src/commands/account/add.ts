@@ -1,5 +1,5 @@
 import { CliUx, Command } from '@oclif/core'
-import { createWallet, importWallet } from '../../utils/wallet'
+import { checkMaticBalance, createWallet, drinkFromFaucet, importWallet } from '../../utils/wallet'
 
 export default class AccountAdd extends Command {
   static description = 'Add an ethereum account'
@@ -24,6 +24,22 @@ export default class AccountAdd extends Command {
     )
     this.log(`Wallet created successfully!`)
     this.log(`Your wallet address is ${wallet.address}`)
+
+    const getMatic = await CliUx.ux.confirm('Do you want to get some free MATIC tokens from the Polygon MATIC Faucet? (recommended)')
+    if (!getMatic) {
+      CliUx.ux.exit(1)
+    }
+    this.log(`Requesting a drop from the MATIC faucet`)
+    const res = await drinkFromFaucet(wallet.address)
+    if (res.hash === 'TRANSACTION_SENT_TO_DB') {
+      const startbal = await checkMaticBalance(wallet.address)
+      this.log('Starting balance:', startbal)
+      this.log(`MATIC tokens requested from Mumbai testnet faucet.`)
+      this.log('The MATIC may take a couple of minutes to show up in your account.')
+      this.log(`You can check your balance at https://mumbai.polygonscan.com/address/${wallet.address}`)
+    } else {
+      CliUx.ux.error('Failed to request tokens from faucet, please try again in a few minutes')
+    }
   }
 }
 

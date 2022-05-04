@@ -5,6 +5,7 @@ import fs from 'fs'
 import os from 'os'
 import erc20Json from '../../abis/erc20.json'
 import { AbiItem } from 'web3-utils'
+import { checkMaticBalance } from '../../utils/wallet'
 
 export default class AccountBalance extends Command {
   static description = 'Get the balance of your ETH wallet'
@@ -14,16 +15,18 @@ export default class AccountBalance extends Command {
 
   static flags = {}
 
-  static args = [{ name: 'tokenSymbol', description: 'symbol of the ERC20 token', required: true }]
+  static args = [{
+    name: 'tokenSymbol',
+    description: 'symbol of the ERC20 token',
+    default: 'USD'
+  }]
 
   public async run(): Promise<void> {
     const {
       args,
-      flags
     } = await this.parse(AccountBalance)
 
     const web3 = new Web3(userConfig.get('provider').maticMumbai)
-
     const baseDir = os.homedir() + '/.openlab'
 
     if (!fs.existsSync(baseDir + '/wallet.json')) {
@@ -39,6 +42,8 @@ export default class AccountBalance extends Command {
       const account = web3.eth.accounts.decrypt(keystoreJsonV3, password)
       const rawbalance = await erc20Contract.methods.balanceOf(account.address).call()
       const erc20Balance = web3.utils.fromWei(rawbalance)
+      const maticBalance = await checkMaticBalance(account.address)
+      this.log(`MATIC balance: ${maticBalance}`)
       this.log(`${args.tokenSymbol} balance: ${erc20Balance}`)
     }
   }

@@ -43,25 +43,6 @@ export interface EstuaryList {
   results: EstuaryListEntry[];
 }
 
-const ONE_HOUR = 3.6e+6 // milliseconds
-
-function isExpired(clientKey: EstuaryClientKey | null) {
-  if (!clientKey) return true
-  const expiry = (new Date(clientKey.expiry)).getTime()
-  const now = Date.now()
-  if (now - expiry < ONE_HOUR) {
-    // less than one hour left, refresh the key
-    return true
-  }
-  return false
-}
-
-function loadLocalKey() {
-  return userConfig.get('estuary').clientKey
-}
-
-type LazyloadingAPI = ApisauceInstance
-
 export class EstuaryAPI {
   clientKey?: EstuaryClientKey
   api?: ApisauceInstance
