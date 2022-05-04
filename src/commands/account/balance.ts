@@ -37,7 +37,8 @@ export default class AccountBalance extends Command {
       const password = await CliUx.ux.prompt('Enter a password to decrypt your wallet', { type: 'hide' })
       const keystoreJsonV3 = JSON.parse(fs.readFileSync(baseDir + '/wallet.json', 'utf-8'))
       const account = web3.eth.accounts.decrypt(keystoreJsonV3, password)
-      const erc20Balance = web3.utils.fromWei(await erc20Contract.methods.balanceOf(account.address).call())
+      const rawbalance = await erc20Contract.methods.balanceOf(account.address).call()
+      const erc20Balance = web3.utils.fromWei(rawbalance)
       this.log(`${args.tokenSymbol} balance: ${erc20Balance}`)
     }
   }
