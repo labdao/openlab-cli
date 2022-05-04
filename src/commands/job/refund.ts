@@ -4,13 +4,10 @@ import Listr from 'listr'
 
 export default class JobRefund extends Command {
   static description = 'Cancel a job and return funds'
-
   static flags = {}
-
   static args = [
     { name: 'jobId', description: 'ID of the job to cancel', required: true },
   ]
-
   static examples = [
     'openlab contract refund <jobID>',
   ]
