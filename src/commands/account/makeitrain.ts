@@ -5,6 +5,7 @@ import fs from 'fs'
 import os from 'os'
 import testusdJson from '../../abis/testusd.json'
 import { AbiItem } from 'web3-utils'
+import { checkMaticBalance, drinkFromFaucet } from '../../utils/wallet'
 
 export default class MakeItRain extends Command {
   static description = 'Mint test USD tokens'

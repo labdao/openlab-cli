@@ -17,7 +17,7 @@ export default class FileList extends Command {
 
   public async run(): Promise<void> {
     const {args, flags} = await this.parse(FileList)
-    const path = args.path || '/'
+    // const path = args.path || '/'
     const estuary = new EstuaryAPI()
     const data = await estuary.list()
     CliUx.ux.table(

@@ -66,7 +66,6 @@ export default class JobList extends Command {
   }
 
   async logJobs(jobs: any[], flags: any) {
-
     const columns = Object.fromEntries(
       new Map(allUniqueKeys(jobs).map(k => [k, {}]))
     )
