@@ -1,6 +1,6 @@
 import { CliUx, Command, Flags } from '@oclif/core'
 import Web3 from 'web3'
-import userConfig from '../../config'
+import userConfig, { defaults } from '../../config'
 import fs from 'fs'
 import os from 'os'
 import testusdJson from '../../abis/testusd.json'
@@ -14,9 +14,9 @@ export default class MakeItRain extends Command {
     '<%= config.bin %> <%= command.id %>',
   ]
   public async run(): Promise<void> {
-    const web3 = new Web3(userConfig.get('provider').maticMumbai)
-    console.log(`Alchemy Mumbai: ${userConfig.get('provider').alchemyMumbai}`)
-    console.log(`Matic Mumbai: ${userConfig.get('provider').maticMumbai}`)
+    const web3 = new Web3(defaults.provider.maticMumbai)
+    console.log(`Alchemy Mumbai: ${defaults.provider.alchemyMumbai}`)
+    console.log(`Matic Mumbai: ${defaults.provider.maticMumbai}`)
     const baseDir = os.homedir() + '/.openlab'
     if (!fs.existsSync(baseDir + '/wallet.json')) {
       this.log("Wallet doesn't exist")
