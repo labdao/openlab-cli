@@ -20,7 +20,7 @@ export default class MakeItRain extends Command {
       this.log("Wallet doesn't exist")
     }
     else {
-      const usdToken = '0x7fD2493c6ec0400be7247D6A251F00fdccc17375'
+      const usdToken = defaults.tokens.maticMumbai.USD
       const password = await CliUx.ux.prompt('Enter a password to decrypt your wallet', { type: 'hide' })
       const keystoreJsonV3 = JSON.parse(fs.readFileSync(baseDir + '/wallet.json', 'utf-8'))
       const account = web3.eth.accounts.decrypt(keystoreJsonV3, password)
