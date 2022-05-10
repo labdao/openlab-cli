@@ -26,6 +26,11 @@ export const defaults = {
       maticMumbai: {
           USD: '0x7fD2493c6ec0400be7247D6A251F00fdccc17375'
       }
+  },
+  subgraphs: {
+    maticMumbai: {
+      exchange: 'https://api.thegraph.com/subgraphs/name/acashmoney/openlab-exchange'
+    }
   }
 }
 
