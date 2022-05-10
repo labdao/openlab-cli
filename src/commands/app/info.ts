@@ -1,7 +1,7 @@
 import { OpenLabApi, Configuration } from "@labdao/openlab-applayer-client"
 import { Command, CliUx } from "@oclif/core"
 import { empty } from "multiformats/bytes"
-import userConfig from '../../config'
+import userConfig, { defaults } from '../../config'
 
 export default class FileList extends Command {
   static enableJsonFlag = false
@@ -22,7 +22,8 @@ export default class FileList extends Command {
     CliUx.ux.action.start(`Fetching app details for '${args.appname}'`)
     const path = args.path || '/'
     const api2 = new OpenLabApi(new Configuration({
-      basePath: userConfig.get('openlab').baseUrl
+      // basePath: userConfig.get('openlab').baseUrl
+      basePath: defaults.openlab.baseUrl
     }))
     const app = await api2.getApp(args.appname)
     CliUx.ux.action.stop()
@@ -30,16 +31,19 @@ export default class FileList extends Command {
     CliUx.ux.styledHeader(`${a.appname} v${a.version} from LabDAO Openlab`)
     this.log('App name:', a.appname)
     this.log('App description:', a.description)
-    this.log('Available from:', 'LabDAO Openlab', userConfig.get('openlab').baseUrl)
+    // this.log('Available from:', 'LabDAO Openlab', userConfig.get('openlab').baseUrl)
+    this.log('Available from:', 'LabDAO Openlab', defaults.openlab.baseUrl)
     const eps = a.endpoints?.map(
       ep => {
         const url = new URL(
           ['v1/apps/', ep].join('/').replace('//', '/'),
-          userConfig.get('openlab').baseUrl
+          // userConfig.get('openlab').baseUrl
+          defaults.openlab.baseUrl
         )
         const docsurl = new URL(
           ['docs#', ep].join('/').replace('//', '/'),
-          userConfig.get('openlab').baseUrl
+          // userConfig.get('openlab').baseUrl
+          defaults.openlab.baseUrl
         )
         return {
           endpoint: ep,

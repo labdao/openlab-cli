@@ -1,6 +1,6 @@
 import { OpenLabApi, Configuration } from "@labdao/openlab-applayer-client"
 import { Command, CliUx } from "@oclif/core"
-import userConfig from '../../config'
+import userConfig, { defaults } from '../../config'
 
 export default class FileList extends Command {
   static enableJsonFlag = false
@@ -20,7 +20,8 @@ export default class FileList extends Command {
     const {args, flags} = await this.parse(FileList)
     const path = args.path || '/'
     const api2 = new OpenLabApi(new Configuration({
-      basePath: userConfig.get('openlab').baseUrl
+      // basePath: userConfig.get('openlab').baseUrl
+      basePath: defaults.openlab.baseUrl
     }))
     const apps = await api2.apps()
     CliUx.ux.table(

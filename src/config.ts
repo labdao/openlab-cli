@@ -12,8 +12,7 @@ export const defaults = {
     estuaryUploadUrl: 'https://shuttle-5.estuary.tech'
   },
   provider: {
-      maticMumbai: 'https://polygon-mumbai.g.alchemy.com/v2/RbQoqBm8Vp-taNd4jg7YRDB5t9QSoAAb', 
-      // maticMumbai: 'https://rpc-mumbai.matic.today',
+      maticMumbai: 'https://rpc-mumbai.matic.today',
       alchemyMumbai: 'https://polygon-mumbai.g.alchemy.com/v2/RbQoqBm8Vp-taNd4jg7YRDB5t9QSoAAb'
   },
   contracts: {

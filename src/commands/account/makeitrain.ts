@@ -14,9 +14,7 @@ export default class MakeItRain extends Command {
     '<%= config.bin %> <%= command.id %>',
   ]
   public async run(): Promise<void> {
-    const web3 = new Web3(defaults.provider.maticMumbai)
-    console.log(`Alchemy Mumbai: ${defaults.provider.alchemyMumbai}`)
-    console.log(`Matic Mumbai: ${defaults.provider.maticMumbai}`)
+    const web3 = new Web3(defaults.provider.alchemyMumbai)
     const baseDir = os.homedir() + '/.openlab'
     if (!fs.existsSync(baseDir + '/wallet.json')) {
       this.log("Wallet doesn't exist")
