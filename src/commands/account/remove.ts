@@ -1,6 +1,6 @@
 import {CliUx, Command, Flags} from '@oclif/core'
 import Web3 from 'web3'
-import userConfig from '../../config'
+import userConfig, { defaults } from '../../config'
 import fs from 'fs'
 import os from 'os'
 import Listr from 'listr'

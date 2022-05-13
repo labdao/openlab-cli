@@ -1,4 +1,5 @@
 import { Command, CliUx } from '@oclif/core'
+import userConfig, { defaults } from '../../config'
 import axios from 'axios'
 
 const jobStatus = [
@@ -23,7 +24,7 @@ export default class JobList extends Command {
   ]
 
   // Update when new subgraph is deployed
-  static APIURL = `https://api.thegraph.com/subgraphs/name/acashmoney/openlab-exchange`
+  static APIURL = defaults.subgraphs.maticMumbai.exchange
 
   // Construct the job query with optional
   // filtering by job status

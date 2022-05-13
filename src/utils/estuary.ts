@@ -12,7 +12,7 @@ import {
 //   create as createIPFSNode
 // } from 'ipfs-core'
 // import writeIterableToFile from './it-stream'
-import userConfig from '../config'
+import userConfig, { defaults } from '../config'
 // import {
 //   CID
 // } from 'multiformats/cid'
@@ -53,7 +53,8 @@ export class EstuaryAPI {
 
   async loadApiKey() {
     const uploadKeyApi = createAPI({
-      baseURL: userConfig.get('estuary').clientKeyUrl
+      // baseURL: userConfig.get('estuary').clientKeyUrl
+      baseURL: defaults.estuary.clientKeyUrl
     })
     const res = await uploadKeyApi.post('/', {})
     if (res.problem) {
@@ -78,7 +79,8 @@ export class EstuaryAPI {
   async getApi() {
     const headers = await this.buildHeaders()
     return createAPI({
-      baseURL: userConfig.get('estuary').estuaryApiUrl,
+      // baseURL: userConfig.get('estuary').estuaryApiUrl,
+      baseURL: defaults.estuary.estuaryApiUrl,
       headers: headers
     })
   }
@@ -86,7 +88,8 @@ export class EstuaryAPI {
   async getUploadApi() {
     const headers = await this.buildHeaders()
     return createAPI({
-      baseURL: userConfig.get('estuary').estuaryUploadUrl,
+      // baseURL: userConfig.get('estuary').estuaryUploadUrl,
+      baseURL: defaults.estuary.estuaryUploadUrl,
       headers: headers
     })
   }

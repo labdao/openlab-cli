@@ -1,6 +1,6 @@
 import { CliUx, Command, Flags } from '@oclif/core'
 import Web3 from 'web3'
-import userConfig from '../../config'
+import userConfig, { defaults } from '../../config'
 import fs from 'fs'
 import os from 'os'
 import erc20Json from '../../abis/erc20.json'
@@ -26,7 +26,7 @@ export default class AccountBalance extends Command {
       args,
     } = await this.parse(AccountBalance)
 
-    const web3 = new Web3(userConfig.get('provider').maticMumbai)
+    const web3 = new Web3(defaults.provider.alchemyMumbai)
     const baseDir = os.homedir() + '/.openlab'
 
     if (!fs.existsSync(baseDir + '/wallet.json')) {
@@ -35,7 +35,8 @@ export default class AccountBalance extends Command {
 
     else {
       const erc20Symbol: string = args.tokenSymbol
-      const erc20Address = userConfig.get('tokens')['maticMumbai'][erc20Symbol]
+      // const erc20Address = userConfig.get('tokens')['maticMumbai'][erc20Symbol]
+      const erc20Address = defaults.tokens.maticMumbai.USD
       const erc20Contract = new web3.eth.Contract(erc20Json as AbiItem[], erc20Address)
       const password = await CliUx.ux.prompt('Enter a password to decrypt your wallet', { type: 'hide' })
       const keystoreJsonV3 = JSON.parse(fs.readFileSync(baseDir + '/wallet.json', 'utf-8'))

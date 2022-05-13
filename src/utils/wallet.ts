@@ -7,7 +7,7 @@ import axios from 'axios'
 import { CliUx } from '@oclif/core'
 import Web3 from 'web3'
 
-import userConfig from '../config'
+import userConfig, { defaults } from '../config'
 import erc20ABI from '../abis/erc20.json'
 import exchangeABI from '../abis/exchange.json'
 
@@ -16,8 +16,10 @@ const UINT256_MAX = `${2 ** 256 - 1}`
 const baseDir = path.join(os.homedir(), '.openlab')
 const walletPath = path.join(baseDir, 'wallet.json')
 const walletExists = fs.existsSync(walletPath)
-const exchangeAddress = userConfig.get('contracts').maticMumbai.exchange
-const provider = userConfig.get('provider').maticMumbai
+// const exchangeAddress = userConfig.get('contracts').maticMumbai.exchange
+const exchangeAddress = defaults.contracts.maticMumbai.exchange
+// const provider = userConfig.get('provider').maticMumbai
+const provider = defaults.provider.alchemyMumbai
 const web3 = new Web3(provider)
 
 let keystore
@@ -179,9 +181,16 @@ function getExchangeContract() {
   )
 }
 
+// function getToken(tokenSymbol = 'USD') {
+//   return userConfig
+//     .get('tokens')['maticMumbai'][tokenSymbol]
+// }
+
 function getToken(tokenSymbol = 'USD') {
-  return userConfig
-    .get('tokens')['maticMumbai'][tokenSymbol]
+  return defaults
+    .tokens
+    .maticMumbai
+    .USD
 }
 
 async function getERC20Contract(tokenSymbol: string = 'USD') {
