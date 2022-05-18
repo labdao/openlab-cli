@@ -18,6 +18,9 @@ export default class AccountAdd extends Command {
     const importing = newWalletType === '2'
     const privateKey = importing && await CliUx.ux.prompt('Enter your private key')
 
+    const getMatic = await CliUx.ux.confirm('Do you want to get some free MATIC tokens from the Polygon MATIC Faucet? (recommended)')
+
+    const cmd = this
     const list = new Listr([
       {
         title: 'Create wallet',
@@ -42,9 +45,7 @@ export default class AccountAdd extends Command {
       },
       {
         title: 'Get MATIC from faucet?',
-        skip: () => {
-          const getMatic = await CliUx.ux.confirm('Do you want to get some free MATIC tokens from the Polygon MATIC Faucet? (recommended)')
-          list.render()
+        skip: async () => {
           if (!getMatic) {
             return 'MATIC faucet skipped'
           }
@@ -55,7 +56,7 @@ export default class AccountAdd extends Command {
           if (res.hash === 'TRANSACTION_SENT_TO_DB') {
 
           } else {
-            return 'Failed to request tokens from faucet, please try again in a few minutes'
+            throw new Error('Failed to request tokens from faucet, please try again in a few minutes')
           }
           return 'Drop requested. The MATIC may take a couple of minutes to show up in your account.'
         }
@@ -63,15 +64,16 @@ export default class AccountAdd extends Command {
       {
         title: '',
         task: async (ctx, task) => {
-          task.
-            this.log(`MATIC tokens requested from Mumbai testnet faucet.`)
-          this.log('The MATIC may take a couple of minutes to show up in your account.')
-          this.log(`You can check your balance at https://mumbai.polygonscan.com/address/${ctx.wallet.address}`)
+          cmd.log(`MATIC tokens requested from Mumbai testnet faucet.`)
+          cmd.log('The MATIC may take a couple of minutes to show up in your account.')
+          cmd.log(`You can check your balance at https://mumbai.polygonscan.com/address/${ctx.wallet.address}`)
         }
       }
     ],
       {}
     )
+
+    list.run()
   }
 }
 

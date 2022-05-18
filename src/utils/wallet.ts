@@ -7,18 +7,17 @@ import axios from 'axios'
 import { CliUx } from '@oclif/core'
 import Web3 from 'web3'
 
-import userConfig, { defaults } from '../config'
+import { defaults } from '../config'
 import erc20ABI from '../abis/erc20.json'
 import exchangeABI from '../abis/exchange.json'
+import testUSDtokenABI from '../abis/testusd.json'
 
 const UINT256_MAX = `${2 ** 256 - 1}`
 
 const baseDir = path.join(os.homedir(), '.openlab')
 const walletPath = path.join(baseDir, 'wallet.json')
 const walletExists = fs.existsSync(walletPath)
-// const exchangeAddress = userConfig.get('contracts').maticMumbai.exchange
 const exchangeAddress = defaults.contracts.maticMumbai.exchange
-// const provider = userConfig.get('provider').maticMumbai
 const provider = defaults.provider.alchemyMumbai
 const web3 = new Web3(provider)
 
@@ -98,15 +97,40 @@ export async function checkMaticBalance(address: string): Promise<string> {
   return balance
 }
 
+// Mint 100 test USD tokens
+export async function makeItRain(address: string): Promise<any> {
+  const testusdContract = new web3.eth.Contract(
+    testUSDtokenABI as AbiItem[],
+    getToken()
+  )
+  const tx = await testusdContract.methods.mint().send(
+    {
+      from: address,
+      gasLimit: 100000,
+      gasPrice: web3.utils.toWei('30', 'gwei')
+    }
+  )
+  return tx
+}
+
+// Check ERC20 token balance
+export async function checkErc20Balance(address: string): Promise<string> {
+  const erc20Contract = await getERC20Contract()
+  const rawbalance = await erc20Contract.methods.balanceOf(
+    address
+  ).call()
+  const erc20Balance = web3.utils.fromWei(rawbalance)
+  return erc20Balance
+}
+
 // Submit a new job to the exchange contract
 export async function submitJob(
-  tokenName: string,
   jobCost: string,
   jobURI: string
 ) {
   const account = await login()
   const contract = getExchangeContract()
-  const token = getToken(tokenName)
+  const token = getToken()
   const jobCostWei = web3.utils.toWei(jobCost, 'ether')
 
   const tx = await contract.methods.submitJob(
@@ -181,22 +205,14 @@ function getExchangeContract() {
   )
 }
 
-// function getToken(tokenSymbol = 'USD') {
-//   return userConfig
-//     .get('tokens')['maticMumbai'][tokenSymbol]
-// }
-
-function getToken(tokenSymbol = 'USD') {
-  return defaults
-    .tokens
-    .maticMumbai
-    .USD
+function getToken() {
+  return defaults.tokens.maticMumbai.USD
 }
 
-async function getERC20Contract(tokenSymbol: string = 'USD') {
+async function getERC20Contract() {
   return new web3.eth.Contract(
     erc20ABI as AbiItem[],
-    getToken(tokenSymbol)
+    getToken()
   )
 }
 

@@ -1,5 +1,8 @@
 import { Command, CliUx } from "@oclif/core"
-import { EstuaryAPI, EstuaryListEntry, EstuaryPin } from '../../utils/estuary';
+import userConfig from "../../config"
+import { EstuaryAPI, EstuaryCollection, EstuaryCollectionEntry } from '../../utils/estuary';
+import treeify from 'treeify'
+import { estuaryFsTable } from "../../utils/cliux"
 
 export default class FileList extends Command {
   static enableJsonFlag = false
@@ -13,36 +16,18 @@ export default class FileList extends Command {
     ...CliUx.ux.table.flags()
   }
 
-  static args = [{name: 'path', description: 'remote path to list'}]
+  static args = [
+    {name: 'path', description: 'remote path to list', default: '/'}
+  ]
 
   public async run(): Promise<void> {
     const {args, flags} = await this.parse(FileList)
-    // const path = args.path || '/'
     const estuary = new EstuaryAPI()
-    const data = await estuary.list()
-    CliUx.ux.table(
-      data.results as any[],
-      {
-        name: {
-          get: row => row.pin && row.pin.name
-        },
-        cid: {
-          get: row => row.pin && row.pin.cid,
-          header: 'CID',
-          minWidth: 40
-        },
-        pinid: {
-          get: row => row.requestid,
-          header: 'PinID'
-        },
-        created: {
-          get: row => new Date(row.created).toISOString().substring(0, 19).replace('T', ' ')
-        },
-      },
-      {
-        printLine: this.log.bind(this),
-        ...flags
-      }
-    )
+    let collection: EstuaryCollection | undefined = userConfig.get('estuary.collection')
+    if (!collection) {
+      this.error('no collection configured')
+    }
+    const data = await estuary.listCollectionFs(collection.uuid, args.path)
+    estuaryFsTable(data, flags)
   }
 }

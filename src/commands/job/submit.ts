@@ -8,7 +8,6 @@ export default class JobSubmit extends Command {
   static flags = {}
 
   static args = [
-    { name: 'tokenSymbol', description: 'Path of file or directory to push', required: true },
     { name: 'jobCost', description: 'Cost to complete job', required: true },
     { name: 'jobURI', description: 'Input file URI', required: true },
   ]
@@ -38,7 +37,7 @@ export default class JobSubmit extends Command {
       {
         title: 'Submit job to exchange contract',
         task: async ctx => {
-          ctx.tx = await submitJob(args.tokenSymbol, args.jobCost, args.jobURI)
+          ctx.tx = await submitJob(args.jobCost, args.jobURI)
           return `Job submitted successfully! Transaction hash: ${ctx.tx}`
         }
       }

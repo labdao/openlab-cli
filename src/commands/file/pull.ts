@@ -1,14 +1,12 @@
 import {
-  // CliUx,
+  CliUx,
   Command,
   Flags
 } from '@oclif/core'
 import download from 'download'
-// import { EstuaryAPI } from '../../utils/estuary'
 import {
   createWriteStream
 } from 'fs'
-import { pipeline } from 'stream'
 
 export default class FilePull extends Command {
   static description = 'Pull a remote file from IPFS to your local file system'
@@ -31,27 +29,33 @@ export default class FilePull extends Command {
     required: true
   }]
 
-  public async run(): Promise < void > {
+  public async run(): Promise<void> {
     const {
       args,
       flags
     } = await this.parse(FilePull)
 
     this.log(`Running pull command with cid = ${args.CID} and outpath = ${flags.outpath}`)
+    this.log('Downloading file...')
 
-    // const estuary = new EstuaryAPI()
-    // estuary.pullFile(args.CID, flags.outpath)
     const dlstream = download(
       'https://dweb.link/ipfs/' + args.CID
     )
-    // let bar = CliUx.ux.progress()
-    // bar.start(100, 0)
 
-    // dlstream.on('downloadProgress', p => {
-    //   bar.update(p.percent)
-    // })
+    let bar = CliUx.ux.progress({
 
-    this.log('Downloading file...')
+    })
+    bar.start(100, 0)
+
+    dlstream.on('downloadProgress', p => {
+      if (p.percent === 1) {
+        bar.on('redraw-post', () => {
+          this.log('\nDownload complete')
+          process.exit(1)
+        })
+      }
+      bar.update(p.percent * 100)
+    })
 
     dlstream.pipe(
       createWriteStream(
