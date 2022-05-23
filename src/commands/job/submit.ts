@@ -2,17 +2,15 @@ import { CliUx, Command, Flags } from '@oclif/core'
 import { login } from '../../utils/wallet'
 import { checkAllowance, submitJob } from '../../utils/exchange/contracts'
 import { EstuaryAPI } from '../../utils/estuary'
-import { flags, getOrCreateCollection } from '../../utils/cliux'
+import { globalFlags, getOrCreateCollection } from '../../utils/cliux'
 import Listr from 'listr'
-
-const force = flags.force()
-const password = flags.password()
 
 export default class JobSubmit extends Command {
   static description = 'Submit a new job to lab-exchange'
 
   static flags = {
-    force, password,
+    force: globalFlags.force(),
+    password: globalFlags.password(),
     price: Flags.string({
       name: 'price',
       description: 'Price you will pay for the job (in gwei). If not specified, the default price will be used.',
@@ -37,7 +35,7 @@ export default class JobSubmit extends Command {
       flags
     } = await this.parse(JobSubmit)
 
-    const account = await login()
+    const account = await login(flags.password)
 
     const tasks = new Listr([
       {

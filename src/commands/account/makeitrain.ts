@@ -1,16 +1,24 @@
 import { Command } from '@oclif/core'
 import { checkErc20Balance, login, makeItRain } from '../../utils/wallet'
 import Listr from 'listr'
+import { globalFlags } from '../../utils/cliux'
 
 export default class MakeItRain extends Command {
-  static aliases: string[] = ['wallet:makeitrain']
   static description = 'Mint test USD tokens to your local ETH wallet'
 
   static examples = [
     'openlab account makeitrain',
   ]
+
+  static flags = {
+    password: globalFlags.password(),
+  }
+
   public async run(): Promise<void> {
-    const account = await login()
+    const {
+      flags
+    } = await this.parse(MakeItRain)
+    const account = await login(flags.password)
     const list = new Listr([
       {
         title: 'Checking wallet',

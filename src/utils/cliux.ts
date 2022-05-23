@@ -102,6 +102,6 @@ export const password = Flags.build({
   env: 'OPENLAB_CLI_PASSWORD'
 })
 
-export const flags = {
+export const globalFlags = {
   force, password
 }

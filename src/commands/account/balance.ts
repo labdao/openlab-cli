@@ -1,4 +1,5 @@
 import { Command } from '@oclif/core'
+import { globalFlags } from '../../utils/cliux'
 import { checkErc20Balance, checkMaticBalance, login } from '../../utils/wallet'
 
 export default class AccountBalance extends Command {
@@ -8,7 +9,9 @@ export default class AccountBalance extends Command {
     '<%= config.bin %> <%= command.id %>',
   ]
 
-  static flags = {}
+  static flags = {
+    password: globalFlags.password()
+  }
 
   static args = [{
     name: 'tokenSymbol',
@@ -18,10 +21,10 @@ export default class AccountBalance extends Command {
 
   public async run(): Promise<void> {
     const {
-      args,
+      args, flags
     } = await this.parse(AccountBalance)
 
-    const account = await login()
+    const account = await login(flags.password)
     const erc20Balance = await checkErc20Balance(account.address)
     const maticBalance = await checkMaticBalance(account.address)
     this.log(`MATIC balance: ${maticBalance}`)

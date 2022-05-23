@@ -1,7 +1,7 @@
 import { Command, CliUx } from "@oclif/core"
 import { estuaryFsTable, getOrCreateCollection } from "../../utils/cliux"
 import { EstuaryAPI } from "../../utils/estuary"
-import { login } from "../../utils/wallet"
+import { loadKeystore } from "../../utils/wallet"
 
 export default class FileList extends Command {
   static enableJsonFlag = false
@@ -21,7 +21,7 @@ export default class FileList extends Command {
 
   public async run(): Promise<void> {
     const {args, flags} = await this.parse(FileList)
-    const account = await login()
+    const account = await loadKeystore()
     const collection = await getOrCreateCollection(account.address)
     const estuary = new EstuaryAPI()
     const data = await estuary.listCollectionFs(collection.uuid, args.path)

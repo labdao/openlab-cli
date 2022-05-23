@@ -1,11 +1,15 @@
 import { CliUx, Command } from '@oclif/core'
 import { acceptJob } from '../../utils/exchange/contracts'
 import Listr from 'listr'
+import { globalFlags } from '../../utils/cliux';
+import { login } from '../../utils/wallet'
 
 export default class JobAccept extends Command {
   static description = 'Accept a job on lab-exchange'
 
-  static flags = {}
+  static flags = {
+    password: globalFlags.password()
+  }
 
   static args = [
     { name: 'jobId', description: 'ID of the job to accept', required: true },
@@ -17,8 +21,10 @@ export default class JobAccept extends Command {
 
   public async run(): Promise<void> {
     const {
-      args
+      args, flags
     } = await this.parse(JobAccept)
+
+    const account = await login(flags.password)
 
     const tasks = new Listr([
       {
@@ -29,7 +35,7 @@ export default class JobAccept extends Command {
         title: 'Accept job',
         task: async (ctx, task) => {
           task.title = 'Accepting job - waiting for contract response'
-          ctx.tx = await acceptJob(args.jobId)
+          ctx.tx = await acceptJob(account, args.jobId)
           return `Job accepted. Transaction hash: ${ctx.tx}`
         }
       },
@@ -44,3 +50,4 @@ export default class JobAccept extends Command {
     if (confirm) tasks.run()
   }
 }
+

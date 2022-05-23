@@ -18,14 +18,16 @@ const provider = constants.provider.alchemyMumbai
 const web3 = new Web3(provider)
 
 // Load local wallet, unlock it and return the account
-export async function login() {
+export async function login(password?: string) {
   assertWalletExists()
-  const password = await CliUx.ux.prompt(
-    'Enter wallet password',
-    { type: 'hide' }
-  )
+  if (!password) {
+    password = await CliUx.ux.prompt(
+      'Enter wallet password',
+      { type: 'hide' }
+    )
+  }
   const keystore = loadKeystore()
-  const account = web3.eth.accounts.decrypt(keystore, password)
+  const account = web3.eth.accounts.decrypt(keystore, password as string)
   web3.eth.accounts.wallet.add(account)
   return account
 }

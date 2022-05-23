@@ -1,6 +1,7 @@
 import { CliUx, Command } from '@oclif/core'
 import { EstuaryAPI } from '../../utils/estuary'
 import { login } from '../../utils/wallet'
+import { globalFlags } from '../../utils/cliux'
 import { getOrCreateCollection } from '../../utils/cliux'
 import { isDirectory } from '../../utils/fs'
 
@@ -11,7 +12,9 @@ export default class FilePush extends Command {
     '<%= config.bin %> <%= command.id %>',
   ]
 
-  static flags = {}
+  static flags = {
+    password: globalFlags.password()
+  }
 
   static args = [
     {
@@ -26,12 +29,12 @@ export default class FilePush extends Command {
   ]
 
   public async run(): Promise<void> {
+    const { args, flags } = await this.parse(FilePush)
     CliUx.ux.info('Uploading to IPFS')
     CliUx.ux.info('To upload to your userspace, you need to authenticate your wallet')
-    const account = await login()
+    const account = await login(flags.password)
     const collection = await getOrCreateCollection(account.address)
     const estuary = new EstuaryAPI()
-    const { args } = await this.parse(FilePush)
     const pathIsDir = await isDirectory(args.path)
     let res
     if (pathIsDir) {

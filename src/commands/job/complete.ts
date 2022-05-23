@@ -2,10 +2,15 @@ import { CliUx, Command } from '@oclif/core'
 import { completeContract } from '../../utils/exchange/contracts'
 import Listr from 'listr'
 import { login } from '../../utils/wallet'
+import { globalFlags } from '../../utils/cliux'
 
 export default class JobComplete extends Command {
   static description = 'Complete a job on lab-exchange'
-  static flags = {}
+
+  static flags = {
+    password: globalFlags.password()
+  }
+
   static args = [
     {
       name: 'jobId',
@@ -25,10 +30,10 @@ export default class JobComplete extends Command {
 
   public async run(): Promise<void> {
     const {
-      args
+      args, flags
     } = await this.parse(JobComplete)
 
-    const account = await login()
+    const account = await login(flags.password)
 
     const tasks = new Listr([
       {
