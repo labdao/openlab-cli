@@ -1,5 +1,6 @@
 import { Command, CliUx, Flags } from '@oclif/core'
 import { jobList, JOB_STATUS } from '../../utils/exchange/graph'
+
 export default class JobList extends Command {
   static description = 'List jobs on lab-exchange'
   static flags = {
@@ -32,7 +33,7 @@ export default class JobList extends Command {
       args, flags
     } = await this.parse(JobList)
     try {
-      const jobs = await jobList(flags.status, flags.latest)
+      const jobs = await jobList(flags.latest, flags.status)
       this.logJobs(jobs, flags)
     } catch (e) {
       this.log('Error querying OpenLab graph:', e)

@@ -1,8 +1,9 @@
-import constants from "../../constants"
 import axios from "axios"
+import userConfig from "../../config"
 
-// Update when new subgraph is deployed
-const APIURL = constants.subgraphs.maticMumbai.exchange
+const API_URL: string = userConfig.get(
+  'subgraphs.maticMumbai.exchange'
+) as string
 export const JOB_STATUS = [
   'open',
   'active',
@@ -10,7 +11,6 @@ export const JOB_STATUS = [
   'cancelled'
 ]
 
-// {id, client, provider, jobCost, jobURI, openlabNFTURI, payableToken, status}
 interface Job {
   id: string
   client: string
@@ -25,7 +25,7 @@ interface Job {
 
 export async function jobList(latest?: string, status?: string): Promise<any[]> {
   const query = jobListQuery(latest, status)
-  const result = await axios.post(APIURL, { query })
+  const result = await axios.post(API_URL, { query })
   if (!result || !result.data || !result.data.data || !result.data.data.jobs) {
     console.log(result.data.errors)
     throw new Error('No jobs found')
@@ -37,28 +37,30 @@ export async function jobList(latest?: string, status?: string): Promise<any[]> 
 function jobListQuery(latest?: string, status?: string): string {
   const latestClause = latest ?
     ` last: ${latest}` : ''
+  const strStatus = JOB_STATUS.indexOf(status as string)
   const whereClause = status ?
-    `where: { jobURI_not: "dummy", status: ${status} }` : ''
+    `where: { jobURI_not: "dummy", status: ${strStatus} }` : ''
   const query = [latestClause, whereClause].filter(Boolean).join(' ')
-  return `
-    query {
-        jobs(${query || 'where: { jobURI_not: "dummy" }'}) {
-            id
-            client
-            provider
-            jobCost
-            jobURI
-            openlabNFTURI
-            payableToken
-            status
-        }
+  const graphqlQuery = `
+query {
+    jobs(${query || 'where: { jobURI_not: "dummy" }'}) {
+        id
+        client
+        provider
+        jobCost
+        jobURI
+        openlabNFTURI
+        payableToken
+        status
     }
+}
     `
+  return graphqlQuery
 }
 
 export async function jobInfo(jobID: string): Promise<any> {
   const query = jobInfoQuery(jobID)
-  const result = await axios.post(APIURL, { query })
+  const result = await axios.post(API_URL, { query })
   if (!result || !result.data || !result.data.data || !result.data.data.job) {
     console.log(result.data.errors)
     throw new Error('No job found')
