@@ -1,30 +1,38 @@
-import { CliUx } from '@oclif/core'
+import { CliUx, Flags } from '@oclif/core'
 import { EstuaryAPI, EstuaryCollection, EstuaryCollectionEntry } from './estuary'
 import treeify from 'treeify'
 import userConfig from '../config'
+import { login } from './wallet'
 
+// Given a wallet address, check if a collection exists
+// If it does, return the collection
+// If it doesn't, create a new collection and return it
 export async function getOrCreateCollection(address: string): Promise<EstuaryCollection> {
-  let collection: EstuaryCollection | undefined = userConfig.get('estuary.collection')
+  let collection: any = userConfig.get('estuary.collection')
   const estuary = new EstuaryAPI()
   if (collection) {
-    CliUx.ux.info(
-      `Using collection ${collection.name} with UUID ${collection.uuid}`
-    )
+    printCollection(collection)
   } else {
     const exists = await estuary.collectionExists(address)
     console.info(exists)
     if (!exists) {
       collection = await estuary.createCollection(address)
       userConfig.set('estuary.collection', collection)
-      CliUx.ux.info(`collection created: ${collection?.name}`)
+      CliUx.ux.info(`Collection created: ${collection?.name}`)
     }
-    CliUx.ux.info('collection:')
-    CliUx.ux.info(JSON.stringify(collection, null, 2))
+    printCollection(collection as EstuaryCollection)
   }
   return collection as EstuaryCollection
 }
 
-export async function estuaryFsTable (
+// Print the collection name and uuid of an EstuaryCollection
+export function printCollection(collection: EstuaryCollection) {
+  CliUx.ux.info(`Using collection ${collection.name}`)
+  CliUx.ux.info(`Collection UUID ${collection.uuid}`)
+}
+
+// Log an EstuaryCollectionEntry as an OCIF CLI UX table
+export async function estuaryFsTable(
   data: EstuaryCollectionEntry[],
   flags: CliUx.Table.table.Options
 ) {
@@ -50,11 +58,14 @@ export async function estuaryFsTable (
   )
 }
 
-export async function estuaryFsTree (data: EstuaryCollectionEntry[]) {
+// Log an EstuaryCollectionEntry as a treeify tree
+export async function estuaryFsTree(data: EstuaryCollectionEntry[]) {
   CliUx.ux.log(treeify.asTree(treeform(data), true, true))
 }
 
-function treeform (data: EstuaryCollectionEntry[]) {
+// Convert an array of Estuary collection entry descriptions
+// to a tree compatible with treeify
+export function treeform(data: EstuaryCollectionEntry[]) {
   const treedata: any = {}
   data.forEach(d => {
     if (d.children) treedata[d.name] = treeform(d.children)
@@ -63,7 +74,9 @@ function treeform (data: EstuaryCollectionEntry[]) {
   return treedata
 }
 
-function flatform (data: EstuaryCollectionEntry[]) {
+// Convert an array of Estuary collection entry descriptions
+// to a flat array compatible with OCLIF CLI UX table
+export function flatform(data: EstuaryCollectionEntry[]) {
   const flatdata: any = data.flatMap(d => {
     if (d.children) {
       return flatform(d.children)
@@ -73,4 +86,22 @@ function flatform (data: EstuaryCollectionEntry[]) {
     return null
   })
   return flatdata.filter((d: any) => d !== null)
+}
+
+// Boolean flag to force a command by skipping confirmation
+export const force = Flags.build({
+  char: 'f',
+  description: 'Force submit job (if false, will prompt for confirmation)',
+  env: 'OPENLAB_CLI_FORCE',
+})
+
+// String flag for wallet password
+export const password = Flags.build({
+  char: 'p',
+  description: 'Wallet password (if not supplied, will prompt for password)',
+  env: 'OPENLAB_CLI_PASSWORD'
+})
+
+export const flags = {
+  force, password
 }
