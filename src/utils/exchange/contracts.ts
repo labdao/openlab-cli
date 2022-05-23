@@ -1,4 +1,4 @@
-import { Account } from 'web3-core'
+import { Account, TransactionConfig } from 'web3-core'
 import { AbiItem, toBN } from 'web3-utils'
 import Web3 from 'web3'
 
@@ -42,8 +42,9 @@ export async function submitJob(
 // Accept the job contract and return the transaction hash
 export async function acceptJob(account: Account, jobId: string) {
   const contract = getExchangeContract()
-  const tx = await contract.methods.acceptJob(jobId).send(
-    standardContractParams(account.address)
+  const data = await contract.methods.acceptJob(jobId).encodeABI()
+  const tx = await sendSignedRawTransaction(
+    account, standardRawContractParams(data)
   )
   return tx
 }
@@ -84,6 +85,31 @@ function standardContractParams(address: string) {
     gasLimit: 500000,
     gasPrice: web3.utils.toWei('30', 'gwei')
   }
+}
+
+function standardRawContractParams(data: string): TransactionConfig {
+  return {
+    to: exchangeAddress,
+    gas: web3.utils.toHex(500000),
+    data: data
+  }
+}
+
+export async function sendSignedRawTransaction(
+  from: Account, txData: TransactionConfig
+) {
+  const nonce = await web3.eth.getTransactionCount(from.address)
+  const rawTx = Object.assign(txData, {
+    from: from.address, nonce
+  }) as TransactionConfig
+
+  const signedTx = await web3.eth.accounts.signTransaction(
+    rawTx, from.privateKey
+  )
+  const tx = await web3.eth.sendSignedTransaction(
+    signedTx.rawTransaction as string
+  )
+  return tx
 }
 
 export function getExchangeContract() {
