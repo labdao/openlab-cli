@@ -7,38 +7,42 @@ import axios from 'axios'
 import { CliUx } from '@oclif/core'
 import Web3 from 'web3'
 
-import { defaults } from '../config'
-import erc20ABI from '../abis/erc20.json'
-import exchangeABI from '../abis/exchange.json'
+import { getERC20Contract, getToken } from './exchange/contracts'
+import constants from '../constants'
 import testUSDtokenABI from '../abis/testusd.json'
-
-const UINT256_MAX = `${2 ** 256 - 1}`
 
 const baseDir = path.join(os.homedir(), '.openlab')
 const walletPath = path.join(baseDir, 'wallet.json')
 const walletExists = fs.existsSync(walletPath)
-const exchangeAddress = defaults.contracts.maticMumbai.exchange
-const provider = defaults.provider.alchemyMumbai
+const provider = constants.provider.alchemyMumbai
 const web3 = new Web3(provider)
-
-let keystore
 
 // Load local wallet, unlock it and return the account
 export async function login() {
+  assertWalletExists()
+  const password = await CliUx.ux.prompt(
+    'Enter wallet password',
+    { type: 'hide' }
+  )
+  const keystore = loadKeystore()
+  const account = web3.eth.accounts.decrypt(keystore, password)
+  web3.eth.accounts.wallet.add(account)
+  return account
+}
+
+export function assertWalletExists() {
   if (!walletExists) {
     CliUx.ux.log('No wallet found!')
     CliUx.ux.log('You should create or add one by running:')
     CliUx.ux.log('> openlab account add')
     CliUx.ux.exit(1)
   }
-  const password = await CliUx.ux.prompt(
-    'Enter wallet password',
-    { type: 'hide' }
-  )
-  keystore = JSON.parse(fs.readFileSync(walletPath, 'utf-8'))
-  const account = web3.eth.accounts.decrypt(keystore, password)
-  web3.eth.accounts.wallet.add(account)
-  return account
+}
+
+export function loadKeystore() {
+  assertWalletExists()
+  const keystore = JSON.parse(fs.readFileSync(walletPath, 'utf-8'))
+  return keystore
 }
 
 export async function createWallet(
@@ -123,119 +127,13 @@ export async function checkErc20Balance(address: string): Promise<string> {
   return erc20Balance
 }
 
-// Submit a new job to the exchange contract
-export async function submitJob(
-  jobCost: string,
-  jobURI: string
-) {
-  const account = await login()
-  const contract = getExchangeContract()
-  const token = getToken()
-  const jobCostWei = web3.utils.toWei(jobCost, 'ether')
-
-  const tx = await contract.methods.submitJob(
-    account.address,
-    token,
-    jobCostWei,
-    jobURI
-  ).send(
-    standardContractParams(account.address)
-  )
-  return tx
-}
-
-// Accept the job contract and return the transaction hash
-export async function acceptJob(jobId: string) {
-  const account = await login()
-  const contract = getExchangeContract()
-  const tx = await contract.methods.acceptJob(jobId).send(
-    standardContractParams(account.address)
-  )
-  return tx
-}
-
-// Cancel the job and refund the client
-export async function refundJob(jobId: string) {
-  const account = await login()
-  const contract = getExchangeContract()
-  const tx = await contract.methods.returnFunds(jobId).send(
-    standardContractParams(account.address)
-  )
-  return tx
-}
-
-// Complete the job contract with the final token swap
-// @param jobId - the job id to complete
-// @param tokenURI - the token URI to swap
-// @returns the transaction hash
-export async function completeContract(
-  jobId: string,
-  tokenURI: string,
-  account?: any,
-  contract?: any
-) {
-  if (!account) {
-    account = await login()
-  }
-  if (!contract) {
-    contract = getExchangeContract()
-  }
-
-  const tx = await contract.methods.swap(
-    jobId,
-    tokenURI
-  ).send(
-    standardContractParams(account.address)
-  )
-
-  return tx
-}
-
-function standardContractParams(address: string) {
-  return {
-    from: address,
-    gasLimit: 500000,
-    gasPrice: web3.utils.toWei('30', 'gwei')
-  }
-}
-
-function getExchangeContract() {
-  return new web3.eth.Contract(
-    exchangeABI as AbiItem[], exchangeAddress
-  )
-}
-
-function getToken() {
-  return defaults.tokens.maticMumbai.USD
-}
-
-async function getERC20Contract() {
-  return new web3.eth.Contract(
-    erc20ABI as AbiItem[],
-    getToken()
-  )
-}
-
-// Get the balance of the token in the exchange contract
-export async function checkAllowance(jobCost: string) {
-  const account = await login()
-  const erc20Contract = await getERC20Contract()
-
-  const allowance = await erc20Contract.methods.allowance(
-    account.address,
-    exchangeAddress
-  ).call()
-
-  const jobCostWei = web3.utils.toWei(jobCost, 'ether')
-  if (toBN(allowance).gt(toBN(jobCostWei))) {
-    return 'Allowance already sufficient'
-  }
-
-  const tx = await erc20Contract.methods.approve(
-    exchangeAddress,
-    UINT256_MAX
-  ).send(
-    standardContractParams(account.address)
-  )
-  return 'Exchange contract allowance approved: ' + tx.transactionHash
+export default {
+  login,
+  createWallet,
+  importWallet,
+  removeWallet,
+  drinkFromFaucet,
+  checkMaticBalance,
+  makeItRain,
+  checkErc20Balance,
 }
