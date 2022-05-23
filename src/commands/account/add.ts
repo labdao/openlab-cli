@@ -1,6 +1,6 @@
 import { CliUx, Command } from '@oclif/core'
 import Listr from 'listr'
-import { checkMaticBalance, createWallet, drinkFromFaucet, importWallet } from '../../utils/wallet'
+import { checkMaticBalance, createWallet, drinkFromFaucet, importWallet } from '../../lib/wallet'
 
 export default class AccountAdd extends Command {
   // TODO: allow multiple wallets

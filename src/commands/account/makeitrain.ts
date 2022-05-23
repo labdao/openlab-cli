@@ -1,7 +1,7 @@
 import { Command } from '@oclif/core'
-import { checkErc20Balance, login, makeItRain } from '../../utils/wallet'
+import { checkErc20Balance, login, makeItRain } from '../../lib/wallet'
 import Listr from 'listr'
-import { globalFlags } from '../../utils/cliux'
+import { globalFlags } from '../../lib/cliux'
 
 export default class MakeItRain extends Command {
   static description = 'Mint test USD tokens to your local ETH wallet'

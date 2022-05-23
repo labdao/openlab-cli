@@ -1,6 +1,7 @@
 import {Hook} from '@oclif/core'
-import getLabDAOCID from '../../utils/ens'
 import axios from 'axios'
+
+import getLabDAOCID from '../../lib/ens'
 import userConfig from '../../config'
 
 const hook: Hook<'init'> = async function () {

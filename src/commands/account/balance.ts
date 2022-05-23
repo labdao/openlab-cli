@@ -1,6 +1,6 @@
 import { Command } from '@oclif/core'
-import { globalFlags } from '../../utils/cliux'
-import { checkErc20Balance, checkMaticBalance, login } from '../../utils/wallet'
+import { globalFlags } from '../../lib/cliux'
+import { checkErc20Balance, checkMaticBalance, login } from '../../lib/wallet'
 
 export default class AccountBalance extends Command {
   static aliases: string[] = ['wallet:balance']

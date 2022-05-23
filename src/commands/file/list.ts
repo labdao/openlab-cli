@@ -1,7 +1,7 @@
 import { Command, CliUx } from "@oclif/core"
-import { estuaryFsTable, getOrCreateCollection } from "../../utils/cliux"
-import { EstuaryAPI } from "../../utils/estuary"
-import { loadKeystore } from "../../utils/wallet"
+import { estuaryFsTable, getOrCreateCollection } from "../../lib/cliux"
+import { EstuaryAPI } from "../../lib/estuary"
+import { loadKeystore } from "../../lib/wallet"
 
 export default class FileList extends Command {
   static enableJsonFlag = false

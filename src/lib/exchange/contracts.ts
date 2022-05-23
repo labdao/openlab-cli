@@ -31,9 +31,7 @@ export async function submitJob(
     jobURI
   ).encodeABI()
 
-  const tx = await sendSignedRawTransaction(
-    account, standardRawContractParams(data)
-  )
+  const tx = await sendSignedTx(account, data)
   return tx
 }
 
@@ -41,18 +39,15 @@ export async function submitJob(
 export async function acceptJob(account: Account, jobId: string) {
   const contract = getExchangeContract()
   const data = await contract.methods.acceptJob(jobId).encodeABI()
-  const tx = await sendSignedRawTransaction(
-    account, standardRawContractParams(data)
-  )
+  const tx = await sendSignedTx(account, data)
   return tx
 }
 
 // Cancel the job and refund the client
 export async function refundJob(account: Account, jobId: string) {
   const contract = getExchangeContract()
-  const tx = await contract.methods.returnFunds(jobId).send(
-    standardContractParams(account.address)
-  )
+  const data = await contract.methods.returnFunds(jobId).encodeABI()
+  const tx = await sendSignedTx(account, data)
   return tx
 }
 
@@ -66,14 +61,8 @@ export async function completeContract(
   tokenURI: string,
 ) {
   const contract = getExchangeContract()
-
-  const tx = await contract.methods.swap(
-    jobId,
-    tokenURI
-  ).send(
-    standardContractParams(account.address)
-  )
-
+  const data = await contract.methods.swap(jobId, tokenURI)
+  const tx =  await sendSignedTx(account, data)
   return tx
 }
 
@@ -93,9 +82,10 @@ function standardRawContractParams(data: string): TransactionConfig {
   }
 }
 
-export async function sendSignedRawTransaction(
-  from: Account, txData: TransactionConfig
+export async function sendSignedTx(
+  from: Account, data: any
 ) {
+  const txData: TransactionConfig = standardRawContractParams(data)
   const nonce = await web3.eth.getTransactionCount(from.address)
   const rawTx = Object.assign(txData, {
     from: from.address, nonce

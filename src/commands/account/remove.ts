@@ -1,6 +1,6 @@
 import { CliUx, Command, Flags } from '@oclif/core'
 import Listr from 'listr'
-import { removeWallet } from '../../utils/wallet'
+import { removeWallet } from '../../lib/wallet'
 
 export default class AccountRemove extends Command {
   static aliases: string[] = ['wallet:remove']
