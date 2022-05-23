@@ -1,5 +1,5 @@
-import { Command, tsPath } from '@oclif/core'
-import { checkErc20Balance, checkMaticBalance, login, makeItRain } from '../../utils/wallet'
+import { Command } from '@oclif/core'
+import { checkErc20Balance, login, makeItRain } from '../../utils/wallet'
 import Listr from 'listr'
 
 export default class MakeItRain extends Command {
