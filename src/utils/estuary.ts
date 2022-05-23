@@ -7,58 +7,60 @@ import FormData from 'form-data'
 import {
   createReadStream,
 } from 'fs'
-import { defaults } from '../config'
+import path from 'path'
+import constants from '../constants'
+import { walkDirectory, FSItem } from './fs'
 
 
 interface EstuaryClientKey {
-  token: string;
-  expiry: string;
+  token: string
+  expiry: string
 }
 
 export interface EstuaryCollection {
-  name: string;
-  uuid: string;
-  description: string;
-  createdAt: string;
-  userId: number;
+  name: string
+  uuid: string
+  description: string
+  createdAt: string
+  userId: number
 }
 
 interface EstuaryPushResponse {
-  cid: string;
-  estuaryId: number;
-  providers: string[];
+  cid: string
+  estuaryId: number
+  providers: string[]
 }
 
 export interface EstuaryListEntry {
-  requestid: string;
-  status: string;
-  created: Date;
-  pin: EstuaryPin;
-  delegates: string[];
-  info: null;
+  requestid: string
+  status: string
+  created: Date
+  pin: EstuaryPin
+  delegates: string[]
+  info: null
 }
 
 export interface EstuaryCollectionEntry {
-  name: string;
-  path: string;
-  type: string;
-  size: number;
-  contId: number;
-  cid?: string;
-  children?: EstuaryCollectionEntry[];
+  name: string
+  path: string
+  type: string
+  size: number
+  contId: number
+  cid?: string
+  children?: EstuaryCollectionEntry[]
 }
 
 export interface EstuaryPin {
-  cid: string;
-  name: string;
-  origins: null;
-  meta: null;
+  cid: string
+  name: string
+  origins: null
+  meta: null
 }
 
-type Entry = EstuaryListEntry | EstuaryCollectionEntry;
+type Entry = EstuaryListEntry | EstuaryCollectionEntry
 export interface EstuaryList {
-  count: number;
-  results: Entry[];
+  count: number
+  results: Entry[]
 }
 
 export class EstuaryAPI {
@@ -67,12 +69,11 @@ export class EstuaryAPI {
   uploadApi?: ApisauceInstance
   uploadKeyApi?: ApisauceInstance
 
-  constructor() {}
+  constructor() { }
 
   async loadApiKey() {
     const uploadKeyApi = createAPI({
-      // baseURL: userConfig.get('estuary').clientKeyUrl
-      baseURL: defaults.estuary.clientKeyUrl
+      baseURL: constants.estuary.clientKeyUrl
     })
     const res = await uploadKeyApi.post('/', {})
     if (res.problem) {
@@ -96,8 +97,7 @@ export class EstuaryAPI {
   async getApi() {
     const headers = await this.buildHeaders()
     return createAPI({
-      // baseURL: userConfig.get('estuary').estuaryApiUrl,
-      baseURL: defaults.estuary.estuaryApiUrl,
+      baseURL: constants.estuary.estuaryApiUrl,
       headers: headers
     })
   }
@@ -105,8 +105,7 @@ export class EstuaryAPI {
   async getUploadApi() {
     const headers = await this.buildHeaders()
     return createAPI({
-      // baseURL: userConfig.get('estuary').estuaryUploadUrl,
-      baseURL: defaults.estuary.estuaryUploadUrl,
+      baseURL: constants.estuary.estuaryUploadUrl,
       headers: headers
     })
   }
@@ -123,7 +122,7 @@ export class EstuaryAPI {
     return res.ok
   }
 
-  async createCollection(name: string): Promise < EstuaryCollection | undefined > {
+  async createCollection(name: string): Promise<EstuaryCollection | undefined> {
     const api = await this.getApi()
     const res = await api.post('collections/create', {
       name: name,
@@ -132,7 +131,7 @@ export class EstuaryAPI {
     return res.data as EstuaryCollection
   }
 
-  async list(path: string): Promise < EstuaryList > {
+  async list(path: string): Promise<EstuaryList> {
     const api = await this.getApi()
     const res = await api.get('content/list')
     return res.data as EstuaryList
@@ -190,7 +189,8 @@ export class EstuaryAPI {
 
   async uploadFile(filepath: string) {
     const form = new FormData()
-    form.append("data", createReadStream(filepath))
+    const abspath = path.normalize(filepath)
+    form.append("data", createReadStream(abspath))
     const uploadApi = await this.getUploadApi()
     const res = await uploadApi.post('content/add', form, {
       headers: {
@@ -204,8 +204,36 @@ export class EstuaryAPI {
     return data
   }
 
+  async pushDirectory(
+    collection: string, dirpath: string, remotepath: string
+  ) {
+    walkDirectory(dirpath, async (entry: FSItem) => {
+      const remoteRelPath = path.join(remotepath, entry.filepath)
+      await this.pushFile(collection, entry.filepath, remoteRelPath)
+    })
+  }
+
   async pushFile(collection: string, filepath: string, remotepath: string) {
     const uploadedFile = await this.uploadFile(filepath)
+    const collectionEntry = await this.addFileToCollection(
+      collection, uploadedFile.estuaryId, remotepath
+    )
+    const listEntry = await this.listCollectionFs(collection, remotepath)
+
+    return Object.assign(
+      {
+        collection,
+        path: remotepath
+      },
+      collectionEntry,
+      listEntry,
+      uploadedFile
+    )
+  }
+
+  async pushJobRequest(collection: string, filepath: string): Promise<{ collection: string; path: string } & EstuaryCollectionEntry[] & EstuaryPushResponse> {
+    const uploadedFile = await this.uploadFile(filepath)
+    const remotepath = '/job_requests/' + uploadedFile.cid + '.json'
     const collectionEntry = await this.addFileToCollection(
       collection, uploadedFile.estuaryId, remotepath
     )
