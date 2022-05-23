@@ -1,14 +1,5 @@
 import { Command, CliUx, Flags } from '@oclif/core'
-import constants from '../../constants'
-import axios from 'axios'
-
-const jobStatus = [
-  'open',
-  'active',
-  'closed',
-  'cancelled'
-]
-
+import { jobList, JOB_STATUS } from '../../utils/exchange/graph'
 export default class JobList extends Command {
   static description = 'List jobs on lab-exchange'
   static flags = {
@@ -21,7 +12,7 @@ export default class JobList extends Command {
     status: Flags.string({
       description: 'Only list jobs with the given status',
       char: 's',
-      options: jobStatus,
+      options: JOB_STATUS,
       required: false,
       default: 'open',
       exclusive: ['all']
@@ -36,43 +27,12 @@ export default class JobList extends Command {
 
   static args = []
 
-  // Update when new subgraph is deployed
-  static APIURL = constants.subgraphs.maticMumbai.exchange
-
-  // Construct the job query with optional
-  // filtering by job status
-  private query(latest?: string, status?: string): string {
-    const latestClause = latest ? `last:${latest}` : ''
-    const whereClause = status ? `where: { status: ${status} }` : ''
-    return `
-    query {
-        jobs(${latestClause} ${whereClause}) {
-            id
-            client
-            provider
-            jobCost
-            jobURI
-            openlabNFTURI
-            payableToken
-            status
-        }
-    }
-    `
-  }
-
   public async run(): Promise<void> {
     const {
       args, flags
     } = await this.parse(JobList)
-    const status = jobStatus.indexOf(args.status)
-    const query = this.query(`${status > -1 ? status : ''}`)
     try {
-      const result = await axios.post(JobList.APIURL, { query })
-      if (!result || !result.data || !result.data.data || !result.data.data.jobs) {
-        console.log(result.data.errors)
-        throw new Error('No jobs found')
-      }
-      const jobs = result.data.data.jobs
+      const jobs = await jobList(flags.status, flags.latest)
       this.logJobs(jobs, flags)
     } catch (e) {
       this.log('Error querying OpenLab graph:', e)
@@ -85,7 +45,7 @@ export default class JobList extends Command {
       new Map(allUniqueKeys(jobs).map(k => [k, {}]))
     )
     CliUx.ux.table(
-      jobs.map(j => { j.status = jobStatus[j.status] as any; return j }),
+     jobs,
       columns,
       {
         maxWidth: 20,
