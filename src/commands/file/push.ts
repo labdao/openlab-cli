@@ -1,9 +1,9 @@
 import { CliUx, Command } from '@oclif/core'
-import { EstuaryAPI } from '../../utils/estuary'
-import { login } from '../../utils/wallet'
-import { globalFlags } from '../../utils/cliux'
-import { getOrCreateCollection } from '../../utils/cliux'
-import { isDirectory } from '../../utils/fs'
+import { EstuaryAPI } from '../../lib/estuary'
+import { login } from '../../lib/wallet'
+import { globalFlags } from '../../lib/cliux'
+import { getOrCreateCollection } from '../../lib/cliux'
+import { isDirectory } from '../../lib/fs'
 
 export default class FilePush extends Command {
   static description = 'Push a file from your local filesystem to IPFS'
@@ -13,7 +13,7 @@ export default class FilePush extends Command {
   ]
 
   static flags = {
-    password: globalFlags.password()
+    password: globalFlags.password
   }
 
   static args = [

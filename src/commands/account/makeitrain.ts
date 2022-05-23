@@ -11,7 +11,7 @@ export default class MakeItRain extends Command {
   ]
 
   static flags = {
-    password: globalFlags.password(),
+    password: globalFlags.password,
   }
 
   public async run(): Promise<void> {

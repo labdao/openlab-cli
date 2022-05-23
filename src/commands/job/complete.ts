@@ -1,14 +1,14 @@
 import { CliUx, Command } from '@oclif/core'
-import { completeContract } from '../../utils/exchange/contracts'
+import { completeContract } from '../../lib/exchange/contracts'
 import Listr from 'listr'
-import { login } from '../../utils/wallet'
-import { globalFlags } from '../../utils/cliux'
+import { login } from '../../lib/wallet'
+import { globalFlags } from '../../lib/cliux'
 
 export default class JobComplete extends Command {
   static description = 'Complete a job on lab-exchange'
 
   static flags = {
-    password: globalFlags.password()
+    password: globalFlags.password
   }
 
   static args = [

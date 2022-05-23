@@ -1,14 +1,14 @@
 import { CliUx, Command } from '@oclif/core'
-import { refundJob } from '../../utils/exchange/contracts'
+import { refundJob } from '../../lib/exchange/contracts'
 import Listr from 'listr'
-import { login } from '../../utils/wallet'
-import { globalFlags } from '../../utils/cliux'
+import { login } from '../../lib/wallet'
+import { globalFlags } from '../../lib/cliux'
 
 export default class JobRefund extends Command {
   static description = 'Cancel an accepted job on lab-exchange and return funds'
 
   static flags = {
-    password: globalFlags.password()
+    password: globalFlags.password
   }
 
   static args = [
@@ -23,7 +23,7 @@ export default class JobRefund extends Command {
       args, flags
     } = await this.parse(JobRefund)
 
-    const account = await login(flags.password)
+    const account = await login(flags.password as string)
 
     const tasks = new Listr([
       {

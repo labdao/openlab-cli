@@ -2,7 +2,7 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 
-import { AbiItem, toBN } from 'web3-utils'
+import { AbiItem } from 'web3-utils'
 import axios from 'axios'
 import { CliUx } from '@oclif/core'
 import Web3 from 'web3'

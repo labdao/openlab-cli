@@ -1,5 +1,5 @@
 import { Command, CliUx, Flags } from '@oclif/core'
-import { jobList, JOB_STATUS } from '../../utils/exchange/graph'
+import { jobList, JOB_STATUS } from '../../lib/exchange/graph'
 
 export default class JobList extends Command {
   static description = 'List jobs on lab-exchange'

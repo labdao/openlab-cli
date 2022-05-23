@@ -10,7 +10,7 @@ export default class AccountBalance extends Command {
   ]
 
   static flags = {
-    password: globalFlags.password()
+    password: globalFlags.password
   }
 
   static args = [{

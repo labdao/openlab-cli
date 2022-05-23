@@ -1,6 +1,6 @@
-import {getENSrecords} from '../utils/ens'
+import { getENSrecords } from '../lib/ens'
 
-async function run () {
+async function run() {
   const record = await getENSrecords('labadao.eth')
   console.log(record)
 }

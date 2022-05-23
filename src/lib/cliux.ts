@@ -89,14 +89,14 @@ export function flatform(data: EstuaryCollectionEntry[]) {
 }
 
 // Boolean flag to force a command by skipping confirmation
-export const force = Flags.build({
+export const force = Flags.boolean({
   char: 'f',
   description: 'Force submit job (if false, will prompt for confirmation)',
   env: 'OPENLAB_CLI_FORCE',
 })
 
 // String flag for wallet password
-export const password = Flags.build({
+export const password = Flags.string({
   char: 'p',
   description: 'Wallet password (if not supplied, will prompt for password)',
   env: 'OPENLAB_CLI_PASSWORD'

@@ -1,16 +1,15 @@
-/* eslint-disable indent */
 import {
   ApisauceInstance,
   create as createAPI
 } from 'apisauce'
-import FormData from 'form-data'
 import {
-  createReadStream,
+  createReadStream, writeFile, writeFileSync,
 } from 'fs'
 import path from 'path'
 import constants from '../constants'
 import { walkDirectory, FSItem } from './fs'
-
+import tmp from 'tmp'
+import FormData from 'form-data'
 
 interface EstuaryClientKey {
   token: string
@@ -204,6 +203,28 @@ export class EstuaryAPI {
     return data
   }
 
+  async uploadObject(obj: any, name: string) {
+    const form = new FormData()
+    const tmpdir = tmp.dirSync({ unsafeCleanup: true })
+    const abspath = path.join(tmpdir.name, name + '.json')
+    const json = JSON.stringify(obj)
+    writeFileSync(abspath, json)
+    form.append("data", createReadStream(abspath))
+    const uploadApi = await this.getUploadApi()
+    const res = await uploadApi.post('content/add', form, {
+      headers: {
+        ...form.getHeaders()
+      }
+    })
+    if (!res.ok) {
+      throw new Error(`Could not upload object: ${JSON.stringify(obj)} (${JSON.stringify(res.data)})`)
+    }
+    tmpdir.removeCallback()
+    const data = res.data as EstuaryPushResponse
+    return data
+  }
+
+
   async pushDirectory(
     collection: string, dirpath: string, remotepath: string
   ) {
@@ -231,14 +252,12 @@ export class EstuaryAPI {
     )
   }
 
-  async pushJobRequest(collection: string, filepath: string): Promise<{ collection: string; path: string } & EstuaryCollectionEntry[] & EstuaryPushResponse> {
-    const uploadedFile = await this.uploadFile(filepath)
-    const remotepath = '/job_requests/' + uploadedFile.cid + '.json'
+  async pushJobRequest(collection: string, uploadedFile: EstuaryPushResponse): Promise<{ collection: string; path: string } & EstuaryCollectionEntry[] & EstuaryPushResponse> {
+    const remotepath = '/job_requests/by_cid/' + uploadedFile.cid + '.json'
     const collectionEntry = await this.addFileToCollection(
       collection, uploadedFile.estuaryId, remotepath
     )
     const listEntry = await this.listCollectionFs(collection, remotepath)
-
     return Object.assign(
       {
         collection,

@@ -24,19 +24,17 @@ export async function submitJob(
   const token = getToken()
   const jobCostWei = web3.utils.toWei(jobCost, 'gwei')
 
-  try {
-    const tx = await contract.methods.submitJob(
-      account.address,
-      token,
-      jobCostWei,
-      jobURI
-    ).send(
-      standardContractParams(account.address)
-    )
-    return tx
-  } catch (e) {
-    throw e
-  }
+  const data = await contract.methods.submitJob(
+    account.address,
+    token,
+    jobCostWei,
+    jobURI
+  ).encodeABI()
+
+  const tx = await sendSignedRawTransaction(
+    account, standardRawContractParams(data)
+  )
+  return tx
 }
 
 // Accept the job contract and return the transaction hash
@@ -139,10 +137,11 @@ export async function checkAllowance(jobCost: string, account?: Account) {
     exchangeAddress
   ).call()
 
+
   const jobCostWei = web3.utils.toWei(
-    jobCost, 'gwei'
+    toBN(jobCost), 'gwei'
   )
-  if (toBN(allowance).gt(toBN(jobCostWei))) {
+  if (toBN(allowance).gt(jobCostWei)) {
     return 'Allowance already sufficient'
   }
 
