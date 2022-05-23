@@ -3,7 +3,9 @@ import Listr from 'listr'
 import { checkMaticBalance, createWallet, drinkFromFaucet, importWallet } from '../../utils/wallet'
 
 export default class AccountAdd extends Command {
-  static description = 'Add an ethereum account'
+  // TODO: allow multiple wallets
+  static aliases: string[] = ['wallet:add']
+  static description = 'Add an account by creating or importing an ETH wallet'
   static examples = [
     '<%= config.bin %> <%= command.id %>',
   ]

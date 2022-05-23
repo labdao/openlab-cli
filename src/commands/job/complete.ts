@@ -1,9 +1,10 @@
 import { CliUx, Command } from '@oclif/core'
-import { completeContract } from '../../utils/wallet'
+import { completeContract } from '../../utils/exchange/contracts'
 import Listr from 'listr'
+import { login } from '../../utils/wallet'
 
 export default class JobComplete extends Command {
-  static description = 'Complete a job'
+  static description = 'Complete a job on lab-exchange'
   static flags = {}
   static args = [
     {
@@ -27,6 +28,8 @@ export default class JobComplete extends Command {
       args
     } = await this.parse(JobComplete)
 
+    const account = await login()
+
     const tasks = new Listr([
       {
         title: 'Confirm job completion',
@@ -36,7 +39,7 @@ export default class JobComplete extends Command {
         title: 'Complete job',
         task: async (ctx, task) => {
           task.title = 'Completing job - waiting for contract response'
-          ctx.tx = await completeContract(args.jobId, args.tokenURI)
+          ctx.tx = await completeContract(account, args.jobId, args.tokenURI)
           return `Job completed. Transaction hash: ${ctx.tx}`
         }
       },

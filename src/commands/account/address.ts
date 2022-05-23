@@ -1,13 +1,13 @@
 import { Command } from '@oclif/core'
-import { login } from '../../utils/wallet'
+import { loadKeystore } from '../../utils/wallet'
 
 export default class AccountAddress extends Command {
-    static description = 'Get the address of your local wallet'
-    static examples = [
-        'openlab account address',
-    ]
-    public async run(): Promise<void> {
-      const account = await login()
-      this.log(account.address)
-    }
+  static description = 'Get the address of your local ETH wallet'
+  static examples = [
+      'openlab account address',
+  ]
+  public async run(): Promise<void> {
+    const account = loadKeystore()
+    this.log(`0x${account.address}`)
+  }
 }

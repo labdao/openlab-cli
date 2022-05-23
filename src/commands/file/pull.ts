@@ -18,14 +18,14 @@ export default class FilePull extends Command {
   static flags = {
     outpath: Flags.string({
       char: 'o',
-      description: 'the path where the pulled file or directory should be stored',
+      description: 'Path where the pulled file or directory should be stored',
       default: '.'
     })
   }
 
   static args = [{
     name: 'CID',
-    description: 'the IPFS content identifier of the file or directory to pull',
+    description: 'IPFS content identifier of the file or directory to pull',
     required: true
   }]
 

@@ -2,7 +2,8 @@ import { Command } from '@oclif/core'
 import { checkErc20Balance, checkMaticBalance, login } from '../../utils/wallet'
 
 export default class AccountBalance extends Command {
-  static description = 'Get the balance of your ETH wallet'
+  static aliases: string[] = ['wallet:balance']
+  static description = 'Get the balance of your local ETH wallet'
   static examples = [
     '<%= config.bin %> <%= command.id %>',
   ]

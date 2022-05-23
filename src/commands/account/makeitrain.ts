@@ -3,7 +3,8 @@ import { checkErc20Balance, checkMaticBalance, login, makeItRain } from '../../u
 import Listr from 'listr'
 
 export default class MakeItRain extends Command {
-  static description = 'Mint test USD tokens'
+  static aliases: string[] = ['wallet:makeitrain']
+  static description = 'Mint test USD tokens to your local ETH wallet'
 
   static examples = [
     'openlab account makeitrain',

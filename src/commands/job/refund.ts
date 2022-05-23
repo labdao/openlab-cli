@@ -1,9 +1,10 @@
 import { CliUx, Command } from '@oclif/core'
-import { refundJob } from '../../utils/wallet'
+import { refundJob } from '../../utils/exchange/contracts'
 import Listr from 'listr'
+import { login } from '../../utils/wallet'
 
 export default class JobRefund extends Command {
-  static description = 'Cancel a job and return funds'
+  static description = 'Cancel an accepted job on lab-exchange and return funds'
   static flags = {}
   static args = [
     { name: 'jobId', description: 'ID of the job to cancel', required: true },
@@ -17,6 +18,8 @@ export default class JobRefund extends Command {
       args
     } = await this.parse(JobRefund)
 
+    const account = await login()
+
     const tasks = new Listr([
       {
         title: 'Confirm job refund',
@@ -26,7 +29,7 @@ export default class JobRefund extends Command {
         title: 'Refund job',
         task: async (ctx, task) => {
           task.title = 'Refunding job - waiting for contract response'
-          ctx.tx = await refundJob(args.jobId)
+          ctx.tx = await refundJob(account, args.jobId)
           return `Job refunded. Transaction hash: ${ctx.tx}`
         }
       },
