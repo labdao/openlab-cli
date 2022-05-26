@@ -2,6 +2,9 @@ import { CliUx, Command } from '@oclif/core'
 import Listr from 'listr'
 import { checkMaticBalance, createWallet, drinkFromFaucet, importWallet } from '../../lib/wallet'
 
+
+let string = 'herp derp';
+
 export default class AccountAdd extends Command {
   // TODO: allow multiple wallets
   static aliases: string[] = ['wallet:add']
