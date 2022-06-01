@@ -25,7 +25,7 @@
     "conf": "^10.1.1",
     "download": "^8.0.0",
     "form-data": "^4.0.0",
-    "ipfs-core": "^0.14.1",
+    "ipfs-core": "^0.15.0",
     "multiformats": "^9.6.4"
   },
   "devDependencies": {
