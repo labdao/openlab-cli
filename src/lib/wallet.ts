@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs, { fstatSync } from 'fs'
 import os from 'os'
 import path from 'path'
 
@@ -55,6 +55,9 @@ export async function createWallet(
     account.privateKey,
     password
   )
+  if (!fs.existsSync(path.dirname(walletPath))) {
+    fs.mkdirSync(path.dirname(walletPath))
+  }
   fs.writeFileSync(
     walletPath,
     JSON.stringify(encryptedAccount)
