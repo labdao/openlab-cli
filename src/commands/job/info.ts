@@ -1,7 +1,7 @@
 import { Command, CliUx, Flags } from '@oclif/core'
 import constants from '../../constants'
 import axios from 'axios'
-import { jobInfo } from '../../utils/exchange/graph'
+import { jobInfo } from '../../lib/exchange/graph'
 
 const jobStatus = [
   'open',
