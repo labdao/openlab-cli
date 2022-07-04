@@ -1,9 +1,9 @@
 import {Command, Flags} from '@oclif/core'
-import logger from './utils/log'
+// import logger from './utils/log'
 
 export default abstract class extends Command {
   log(message: string, level: string) {
-    logger.log({ level, message })
+    console.log({ level, message })
   }
 
   // async init() {

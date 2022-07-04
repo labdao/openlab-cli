@@ -1,7 +1,6 @@
 import { OpenLabApi, Configuration } from "@labdao/openlab-applayer-client"
 import { Command, CliUx } from "@oclif/core"
 import userConfig from '../config'
-import logger from "../utils/log"
 export default class App extends Command {
   static enableJsonFlag = true
   static description = 'get application details'
@@ -27,11 +26,11 @@ export default class App extends Command {
     CliUx.ux.action.stop()
     const a = app.data
     if (flags.json) return console.log(JSON.stringify(a, null, 2))
-    logger.info(`App name: ${a.appname}`)
-    logger.info(`App version ${a.version}`)
-    logger.info(`App description: ${a.description}`)
-    logger.info(`Provider: LabDAO Openlab `)
-    logger.info(`API server: ${userConfig.get('openlab').baseUrl}`)
+    CliUx.ux.info(`App name: ${a.appname}`)
+    CliUx.ux.info(`App version ${a.version}`)
+    CliUx.ux.info(`App description: ${a.description}`)
+    CliUx.ux.info(`Provider: LabDAO Openlab `)
+    CliUx.ux.info(`API server: ${userConfig.get('openlab').baseUrl}`)
     // const eps = a.endpoints?.map(
     //   ep => {
     //     const url = new URL(
