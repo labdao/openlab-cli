@@ -10,3 +10,5 @@ node_modules
 oclif.manifest.json
 /docs/helpdata.json
 docs/.docz
+tsconfig.tsbuildinfo
+TODO.md

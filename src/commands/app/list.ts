@@ -1,11 +1,10 @@
 import { OpenLabApi, Configuration } from "@labdao/openlab-applayer-client"
-import { CliUx } from "@oclif/core"
-import userConfig from '../../config'
-import Command from '../../base'
+import { Command, CliUx } from "@oclif/core"
+import constants from '../../constants'
 
 export default class AppList extends Command {
-  static enableJsonFlag = true
-  static description = 'list applications'
+  static enableJsonFlag = false
+  static description = 'List the applications available on lab-exchange'
 
   static examples = [
     'openlab app list',
@@ -15,15 +14,17 @@ export default class AppList extends Command {
     ...CliUx.ux.table.flags()
   }
 
-  static args = [{name: 'provider', description: 'provider name or URL'}]
+  static args = [
+    {name: 'provider', description: 'Provider name or URL'}
+  ]
 
   public async run(): Promise<void> {
     const {args, flags} = await this.parse(AppList)
     const path = args.path || '/'
     const api = new OpenLabApi(new Configuration({
-      basePath: userConfig.get('openlab').baseUrl
+      basePath: constants.openlab.baseUrl
     }))
-  
+
     let apps
     if (flags.json) {
       apps = await api.apps()
