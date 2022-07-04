@@ -36,7 +36,7 @@
     "inquirer": "^8.2.4",
     "isomorphic-fetch": "^3.0.0",
     "listr": "^0.14.3",
-    "multiformats": "^9.6.5",
+    "multiformats": "^9.7.0",
     "node-fetch": "^3.2.4",
     "treeify": "^1.1.0",
     "web3": "^1.7.1",
