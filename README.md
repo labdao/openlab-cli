@@ -33,11 +33,19 @@ When you want to interact with OpenLab from the command-line.
 
 ## How do I use this?
 
+* [Install](#install)
+* [Commands](#commands)
+
+## Install
+
 ```bash
 npm install -g @labdao/openlab-cli
 ```
 
-See the [documentation](./docs/)
+## Commands
+
+<!-- commands -->
+<!-- commandsstop -->
 
 ## License
 

@@ -18,12 +18,13 @@
     "/docs"
   ],
   "dependencies": {
-    "@ensdomains/ensjs": "^2.1.0",
+    "@ensdomains/ensjs": "^3.0.0-alpha.2",
     "@ethersproject/providers": "^5.6.6",
     "@labdao/openlab-applayer-client": "^0.0.2",
     "@oclif/core": "^1",
     "@oclif/plugin-help": "^5",
     "@types/folder-walker": "^3.2.0",
+    "@types/tmp": "^0.2.3",
     "apisauce": "^2.1.5",
     "async-folder-walker": "^2.2.1",
     "cfonts": "^3.1.0",
@@ -33,18 +34,20 @@
     "download": "^8.0.0",
     "ethers": "^5.6.6",
     "form-data": "^4.0.0",
-    "nunjucks": "^3.2.3",
     "get-ens": "^2.0.3",
     "inquirer": "^8.2.4",
+    "ipfs-core": "^0.15.4",
+    "ipfs-core-types": "^0.11.1",
     "isomorphic-fetch": "^3.0.0",
     "listr": "^0.14.3",
     "multiformats": "^9.7.0",
+    "nunjucks": "^3.2.3",
+    "tmp": "^0.2.1",
     "treeify": "^1.1.0",
-    "web3": "^1.7.1",
-    "web3-eth": "^1.7.3"
+    "web3": "^1.7.4",
+    "web3-eth": "^1.7.4"
   },
   "devDependencies": {
-    "@mdx-js/mdx": "^2.0.0",
     "@oclif/test": "^2",
     "@types/chai": "^4",
     "@types/download": "^8.0.1",
@@ -55,6 +58,7 @@
     "@types/mocha": "^9.1.1",
     "@types/node": "^16.9.4",
     "@types/treeify": "^1.0.0",
+    "@types/web3": "^1.2.2",
     "chai": "^4",
     "eslint": "^7.32.0",
     "globby": "^11",
@@ -95,17 +99,17 @@
   },
   "scripts": {
     "build": "shx rm -rf tsconfig.tsbuildinfo dist && tsc -b",
+    "docs": "npm run docs:mkjson && npm run docs:render",
+    "docs:mkjson": "./bin/dev helpdata -n > docs/helpdata.json",
+    "docs:readme": "oclif readme",
+    "docs:render": "node docs/render.js",
     "lint": "eslint . --ext .ts --config .eslintrc",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "npm run lint",
     "prepack": "npm run build && oclif manifest && oclif readme",
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "npm run build && oclif readme && git add README.md",
-    "docs:mkjson": "npm run build && ./bin/dev helpdata -n > docs/helpdata.json",
-    "docs:render": "node docs/render.js",
-    "docs": "npm run docs:mkjson && npm run docs:render",
-    "nock-record": "ts-node ./scripts/nock-record.ts",
-    "check-ens": "ts-node ./src/scripts/check-ens.ts"
+    "test:nock-record": "ts-node ./scripts/nock-record.ts",
+    "test:check-ens": "ts-node ./src/scripts/check-ens.ts"
   },
   "engines": {
     "node": ">=16.0.0"

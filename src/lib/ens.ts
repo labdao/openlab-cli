@@ -1,5 +1,4 @@
 import {ethers} from 'ethers'
-import {CID} from 'multiformats/cid'
 const chash = require('content-hash')
 
 const provider = new ethers.providers.InfuraProvider(

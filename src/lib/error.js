@@ -1,4 +1,4 @@
-const logger = require('./log')
+const logger = require('@oclif/core/lib/cli-ux/index').logger
 
 module.exports = (error) => {
   const oclifHandler = require('@oclif/errors/handle')
