@@ -1,9 +1,11 @@
 import { Command, CliUx } from "@oclif/core"
-import { EstuaryAPI, EstuaryListEntry, EstuaryPin } from '../../utils/estuary';
+import { estuaryFsTable, getOrCreateCollection } from "../../lib/cliux"
+import { EstuaryAPI } from "../../lib/estuary"
+import { loadKeystore } from "../../lib/wallet"
 
 export default class FileList extends Command {
   static enableJsonFlag = false
-  static description = 'list files'
+  static description = 'List the files and directories stored in IPFS'
 
   static examples = [
     '<%= config.bin %> <%= command.id %>',
@@ -13,36 +15,16 @@ export default class FileList extends Command {
     ...CliUx.ux.table.flags()
   }
 
-  static args = [{name: 'path', description: 'remote path to list'}]
+  static args = [
+    {name: 'path', description: 'Remote path to list', default: '/'}
+  ]
 
   public async run(): Promise<void> {
     const {args, flags} = await this.parse(FileList)
-    const path = args.path || '/'
+    const account = await loadKeystore()
+    const collection = await getOrCreateCollection(account.address)
     const estuary = new EstuaryAPI()
-    const data = await estuary.list()
-    CliUx.ux.table(
-      data.results as any[],
-      {
-        name: {
-          get: row => row.pin && row.pin.name
-        },
-        cid: {
-          get: row => row.pin && row.pin.cid,
-          header: 'CID',
-          minWidth: 40
-        },
-        pinid: {
-          get: row => row.requestid,
-          header: 'PinID'
-        },
-        created: {
-          get: row => new Date(row.created).toISOString().substring(0, 19).replace('T', ' ')
-        },
-      },
-      {
-        // printLine: this.log, // current oclif.CliUx bug: https://github.com/oclif/core/issues/377
-        ...flags
-      }
-    )
+    const data = await estuary.listCollectionFs(collection.uuid, args.path)
+    estuaryFsTable(data, flags)
   }
 }
