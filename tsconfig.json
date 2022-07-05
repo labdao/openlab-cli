@@ -7,11 +7,19 @@
     "outDir": "dist",
     "rootDir": "src",
     "strict": true,
-    "target": "es2019",
+    "target": "ESNext",
     "allowSyntheticDefaultImports": true,
+    // "noImplicitAny": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
   },
+  "typeRoots": [
+    "../../node_modules/@types",
+    "../../node_modules/*-types"
+  ],
+  "exclude": [
+    "../../node_modules",
+  ],
   "include": [
     "src/**/*.ts",
     "src/**/*.json",

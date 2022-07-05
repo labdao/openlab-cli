@@ -1,7 +1,7 @@
-import { getENSrecords } from '../lib/ens'
+import getLabDAOCID from '../lib/ens'
 
 async function run() {
-  const record = await getENSrecords('labadao.eth')
+  const record = await getLabDAOCID()
   console.log(record)
 }
 

@@ -12,7 +12,7 @@ export default class FilePull extends Command {
   static description = 'Pull a remote file from IPFS to your local file system'
 
   static examples = [
-    '<%= config.bin %> <%= command.id %>',
+    '<%= config.bin %> <%= command.id %> bafkreictm5biak56glcshkeungckjwf4tf33wxea566dozdyvhrrebnetu -o gp47_tail.fasta',
   ]
 
   static flags = {
@@ -34,6 +34,8 @@ export default class FilePull extends Command {
       args,
       flags
     } = await this.parse(FilePull)
+
+    flags.outpath = flags.outpath === '[CID]' ? args.CID : flags.outpath
 
     this.log(`Running pull command with cid = ${args.CID} and outpath = ${flags.outpath}`)
     this.log('Downloading file...')
