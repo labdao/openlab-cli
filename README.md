@@ -45,35 +45,24 @@ npm install -g @labdao/openlab-cli
 ## Commands
 
 <!-- commands -->
-- [What is this?](#what-is-this)
-- [When shoud I use this?](#when-shoud-i-use-this)
-- [How do I use this?](#how-do-i-use-this)
-- [Install](#install)
-- [Commands](#commands)
-- [`openlab account add`](#openlab-account-add)
-- [`openlab account address`](#openlab-account-address)
-- [`openlab account balance [TOKENSYMBOL]`](#openlab-account-balance-tokensymbol)
-- [`openlab account makeitrain`](#openlab-account-makeitrain)
-- [`openlab account remove`](#openlab-account-remove)
-- [`openlab app info [APPNAME]`](#openlab-app-info-appname)
-- [`openlab app list [PROVIDER]`](#openlab-app-list-provider)
-- [`openlab file list [PATH]`](#openlab-file-list-path)
-- [`openlab file pull CID`](#openlab-file-pull-cid)
-- [`openlab file push PATH [REMOTEPATH]`](#openlab-file-push-path-remotepath)
-- [`openlab help [COMMAND]`](#openlab-help-command)
-- [`openlab helpdata [COMMAND]`](#openlab-helpdata-command)
-- [`openlab job accept JOBID`](#openlab-job-accept-jobid)
-- [`openlab job complete JOBID TOKENURI`](#openlab-job-complete-jobid-tokenuri)
-- [`openlab job info JOBID`](#openlab-job-info-jobid)
-- [`openlab job list`](#openlab-job-list)
-- [`openlab job refund JOBID`](#openlab-job-refund-jobid)
-- [`openlab job submit REQUEST`](#openlab-job-submit-request)
-- [`openlab wallet add`](#openlab-wallet-add)
-- [`openlab wallet balance [TOKENSYMBOL]`](#openlab-wallet-balance-tokensymbol)
-- [`openlab wallet remove`](#openlab-wallet-remove)
-- [License](#license)
+  - [`openlab account add`](#openlab-account-add)
+  - [`openlab account address`](#openlab-account-address)
+  - [`openlab account balance [TOKENSYMBOL]`](#openlab-account-balance-tokensymbol)
+  - [`openlab account makeitrain`](#openlab-account-makeitrain)
+  - [`openlab account remove`](#openlab-account-remove)
+  - [`openlab app info [APPNAME]`](#openlab-app-info-appname)
+  - [`openlab app list [PROVIDER]`](#openlab-app-list-provider)
+  - [`openlab file list [PATH]`](#openlab-file-list-path)
+  - [`openlab file pull CID`](#openlab-file-pull-cid)
+  - [`openlab file push PATH [REMOTEPATH]`](#openlab-file-push-path-remotepath)
+  - [`openlab job accept JOBID`](#openlab-job-accept-jobid)
+  - [`openlab job complete JOBID TOKENURI`](#openlab-job-complete-jobid-tokenuri)
+  - [`openlab job info JOBID`](#openlab-job-info-jobid)
+  - [`openlab job list`](#openlab-job-list)
+  - [`openlab job refund JOBID`](#openlab-job-refund-jobid)
+  - [`openlab job submit REQUEST`](#openlab-job-submit-request)
 
-## `openlab account add`
+### `openlab account add`
 
 Add an account by creating or importing an ETH wallet
 
@@ -91,7 +80,7 @@ EXAMPLES
   $ openlab account add
 ```
 
-## `openlab account address`
+### `openlab account address`
 
 Get the address of your local ETH wallet
 
@@ -106,7 +95,7 @@ EXAMPLES
   $ openlab account address
 ```
 
-## `openlab account balance [TOKENSYMBOL]`
+### `openlab account balance [TOKENSYMBOL]`
 
 Get the balance of your local ETH wallet
 
@@ -130,7 +119,7 @@ EXAMPLES
   $ openlab account balance
 ```
 
-## `openlab account makeitrain`
+### `openlab account makeitrain`
 
 Mint test USD tokens to your local ETH wallet
 
@@ -148,7 +137,7 @@ EXAMPLES
   $ openlab account makeitrain
 ```
 
-## `openlab account remove`
+### `openlab account remove`
 
 Remove your local ETH wallet
 
@@ -166,7 +155,7 @@ EXAMPLES
   $ openlab account remove
 ```
 
-## `openlab app info [APPNAME]`
+### `openlab app info [APPNAME]`
 
 Get the details of an application on lab-exchange
 
@@ -196,7 +185,7 @@ EXAMPLES
   $ openlab app revcomp
 ```
 
-## `openlab app list [PROVIDER]`
+### `openlab app list [PROVIDER]`
 
 List the applications available on lab-exchange
 
@@ -226,7 +215,7 @@ EXAMPLES
   $ openlab app list
 ```
 
-## `openlab file list [PATH]`
+### `openlab file list [PATH]`
 
 List the files and directories stored in IPFS
 
@@ -256,7 +245,7 @@ EXAMPLES
   $ openlab file list
 ```
 
-## `openlab file pull CID`
+### `openlab file pull CID`
 
 Pull a remote file from IPFS to your local file system
 
@@ -277,7 +266,7 @@ EXAMPLES
   $ openlab file pull bafkreictm5biak56glcshkeungckjwf4tf33wxea566dozdyvhrrebnetu -o gp47_tail.fasta
 ```
 
-## `openlab file push PATH [REMOTEPATH]`
+### `openlab file push PATH [REMOTEPATH]`
 
 Push a file from your local filesystem to IPFS
 
@@ -299,47 +288,7 @@ EXAMPLES
   $ openlab file push
 ```
 
-## `openlab help [COMMAND]`
-
-Display help for openlab.
-
-```
-USAGE
-  $ openlab help [COMMAND] [-n]
-
-ARGUMENTS
-  COMMAND  Command to show help for.
-
-FLAGS
-  -n, --nested-commands  Include all nested commands in the output.
-
-DESCRIPTION
-  Display help for openlab.
-```
-
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.12/src/commands/help.ts)_
-
-## `openlab helpdata [COMMAND]`
-
-Emit help as structured data.
-
-```
-USAGE
-  $ openlab helpdata [COMMAND] [-n]
-
-ARGUMENTS
-  COMMAND  Command to show help for.
-
-FLAGS
-  -n, --nested-commands  Include all nested commands in the output.
-
-DESCRIPTION
-  Emit help as structured data.
-```
-
-_See code: [oclif-plugin-helpdata](https://github.com/labdao/oclif-plugin-helpdata/blob/v5.1.12/src/commands/helpdata.ts)_
-
-## `openlab job accept JOBID`
+### `openlab job accept JOBID`
 
 Accept a job on lab-exchange
 
@@ -360,7 +309,7 @@ EXAMPLES
   $ openlab job accept <jobID>
 ```
 
-## `openlab job complete JOBID TOKENURI`
+### `openlab job complete JOBID TOKENURI`
 
 Complete a job on lab-exchange
 
@@ -382,7 +331,7 @@ EXAMPLES
   $ openlab job complete <jobID> <tokenURI>
 ```
 
-## `openlab job info JOBID`
+### `openlab job info JOBID`
 
 Get detail of a specific job on lab-exchange
 
@@ -397,7 +346,7 @@ DESCRIPTION
   Get detail of a specific job on lab-exchange
 ```
 
-## `openlab job list`
+### `openlab job list`
 
 List jobs on lab-exchange
 
@@ -425,7 +374,7 @@ DESCRIPTION
   List jobs on lab-exchange
 ```
 
-## `openlab job refund JOBID`
+### `openlab job refund JOBID`
 
 Cancel an accepted job on lab-exchange and return funds
 
@@ -446,7 +395,7 @@ EXAMPLES
   $ openlab contract refund <jobID>
 ```
 
-## `openlab job submit REQUEST`
+### `openlab job submit REQUEST`
 
 Submit a new job to lab-exchange
 
@@ -470,65 +419,6 @@ EXAMPLES
   $ openlab job submit
 ```
 
-## `openlab wallet add`
-
-Add an account by creating or importing an ETH wallet
-
-```
-USAGE
-  $ openlab wallet add
-
-DESCRIPTION
-  Add an account by creating or importing an ETH wallet
-
-ALIASES
-  $ openlab wallet add
-
-EXAMPLES
-  $ openlab wallet add
-```
-
-## `openlab wallet balance [TOKENSYMBOL]`
-
-Get the balance of your local ETH wallet
-
-```
-USAGE
-  $ openlab wallet balance [TOKENSYMBOL] [-p <value>]
-
-ARGUMENTS
-  TOKENSYMBOL  [default: USD] symbol of the ERC20 token
-
-FLAGS
-  -p, --password=<value>  Wallet password (if not supplied, will prompt for password)
-
-DESCRIPTION
-  Get the balance of your local ETH wallet
-
-ALIASES
-  $ openlab wallet balance
-
-EXAMPLES
-  $ openlab wallet balance
-```
-
-## `openlab wallet remove`
-
-Remove your local ETH wallet
-
-```
-USAGE
-  $ openlab wallet remove
-
-DESCRIPTION
-  Remove your local ETH wallet
-
-ALIASES
-  $ openlab wallet remove
-
-EXAMPLES
-  $ openlab wallet remove
-```
 <!-- commandsstop -->
 
 ## License
