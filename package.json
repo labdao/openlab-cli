@@ -25,7 +25,7 @@
     "@oclif/plugin-help": "^5",
     "apisauce": "^2.1.5",
     "async-folder-walker": "^2.2.1",
-    "cfonts": "^3.1.0",
+    "cfonts": "^3.1.1",
     "cids": "^1.1.9",
     "conf": "^10.1.2",
     "content-hash": "^2.5.2",
