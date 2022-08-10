@@ -17,32 +17,81 @@
   ![badge game](https://10q9gnv1kv6b.runkit.sh)
 </div>
 
-## What is this?
 
-`openlab-cli` is a command-line tool for the OpenLab ecosystem.
 
-It allows you to:
 
-- manage files stored in the OpenLab IPFS network
-- discover and explore available bioinformatics apps
-- run apps by creating and managing jobs
+# OpenLab CLI
 
-## When shoud I use this?
+This repository contains the command line interface to the OpenLab Exchange – a community-run network of wet & dry laboratories accelerating progress in the life sciences.
 
-When you want to interact with OpenLab from the command-line.
-
-## How do I use this?
-
-* [Install](#install)
-* [Commands](#commands)
-
-## Install
+### Install
 
 ```bash
 npm install -g @labdao/openlab-cli
 ```
 
-## Commands
+## For Research Scientists
+
+The OpenLab-Client (CLI) allows scientists do scientific innovation at scale by utilising the networked services of other labs. Scientists in academia, non-profits, startups, enterprise, or independent citizen science can all make use of lab services for both public and private research.
+
+Available lab services can be found via the `app list` command which returns the unique app IDs of services accessible on the exchange. Each app defines its own schema for input files and parameters available via `app info`.
+
+Researchers can submit jobs to the exchange conforming to an app's schema, along with a sum of credits held in escrow to run this service via `job submit` and `file push` for input data.
+
+As a job is accepted by a provider its status is updated and upon completed, the results are returned to the requestor via an NFT that points to an (optionally encrypted) pinned file on IPFS, owned by the requestor. via `job info` and `file pull`.
+
+*While OpenLab is currently still on test net, consuming services are free by requesting test credits (see getting started).*
+
+For more information see Getting Started as a Researcher and reference the detailed CLI Commands section below.  For any questions and suggestions please reach out to the community in the #OpenLab-Cli Discord channel.
+
+
+## For Scientific Providers
+
+The OpenLab-Client (CLI) allows scientific service providers the tools to offer their specialised services to researchers in the DeSci ecosystem. LabDAO is currently curating top quality service providers in computational biology. If you represent a CROs, virtual lab, institution, or are another other big compute provider, who are interested in gaining reputation count as an early provider, please reach out for a personal onboarding via [typeform here].
+
+*After the service provider governance criteria has been defined and self service onboarding automated, anyone will be able to provide lab services listed on the global exchange in a permission-less manner. For now, please get in touch!*
+
+Meanwhile, anyone can offer and consume lab services not listed on the global exchange via fully qualified app ids.
+
+Scientific Providers can list jobs requests via `job list`,  process job requests via `job accept` + `file pull`, and return completed jobs via `file push` + `job complete`.
+
+For more information see Getting Started as a Provider and reference the detailed CLI Commands section below.  For any questions and suggestions please reach out to the community in the #OpenLab-Cli Discord channel.
+
+
+## Getting Started as a Researcher
+
+*To be written:*
+- create an account
+- Request testnet tokens
+- list apps
+- list app requirements
+- format job input parameters
+- upload files, submit job
+- get job info (repeat)
+
+## Getting Started as a Provider
+*To be written*
+- create an account
+- list jobs
+- download job files
+- validate job files
+- process job
+- update job
+- complete job
+- redeem tokens
+
+
+
+---
+## Built with love by LabDAO members.
+For other LabDAO products see Lab Teams, Lab Funding, Lab Knowledge. To get involved generally, join the Discord, follow us on Twitter, and sign up for our mailing list. To aid as a developer, see the developer docs. To contribute or consume services, continue reading below.*
+
+---
+
+# Appendix
+
+
+## CLI Commands
 
 <!-- commands -->
   - [`openlab account add`](#openlab-account-add)
