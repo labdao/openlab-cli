@@ -23,7 +23,7 @@
     "@labdao/openlab-applayer-client": "^0.0.2",
     "@oclif/core": "^1",
     "@oclif/plugin-help": "^5",
-    "apisauce": "^2.1.5",
+    "apisauce": "^2.1.6",
     "async-folder-walker": "^2.2.1",
     "cfonts": "^3.1.0",
     "cids": "^1.1.9",
