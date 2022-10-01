@@ -30,7 +30,7 @@
     "conf": "^10.1.2",
     "content-hash": "^2.5.2",
     "download": "^8.0.0",
-    "ethers": "^5.6.6",
+    "ethers": "^5.7.1",
     "form-data": "^4.0.0",
     "get-ens": "^2.0.3",
     "inquirer": "^8.2.4",
