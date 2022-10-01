@@ -36,7 +36,7 @@
     "inquirer": "^8.2.4",
     "isomorphic-fetch": "^3.0.0",
     "listr": "^0.14.3",
-    "multiformats": "^9.7.0",
+    "multiformats": "^9.9.0",
     "nunjucks": "^3.2.3",
     "tmp": "^0.2.1",
     "treeify": "^1.1.0",
