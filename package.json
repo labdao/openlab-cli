@@ -46,7 +46,7 @@
   "devDependencies": {
     "@oclif/test": "^2",
     "@types/chai": "^4",
-    "@types/download": "^8.0.1",
+    "@types/download": "^8.0.2",
     "@types/folder-walker": "^3.2.0",
     "@types/inquirer": "^8.2.1",
     "@types/isomorphic-fetch": "0.0.36",
