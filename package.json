@@ -18,7 +18,7 @@
     "/docs"
   ],
   "dependencies": {
-    "@ensdomains/ensjs": "^3.0.0-alpha.2",
+    "@ensdomains/ensjs": "^3.0.0-alpha.44",
     "@ethersproject/providers": "^5.6.6",
     "@labdao/openlab-applayer-client": "^0.0.2",
     "@oclif/core": "^1",
