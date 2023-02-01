@@ -32,7 +32,7 @@
     "download": "^8.0.0",
     "ethers": "^5.6.6",
     "form-data": "^4.0.0",
-    "get-ens": "^2.0.3",
+    "get-ens": "^2.1.1",
     "inquirer": "^8.2.4",
     "isomorphic-fetch": "^3.0.0",
     "listr": "^0.14.3",
